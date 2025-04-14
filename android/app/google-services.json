@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "291413121362",
+    "project_id": "alharamin-app",
+    "storage_bucket": "alharamin-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291413121362:android:cbe2902f88fa77326a428b",
+        "android_client_info": {
+          "package_name": "com.example.alharamin_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv80oYGxTXfegK0odLHmw5NaI7QMEqt10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
