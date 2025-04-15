@@ -63,21 +63,21 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Pacifico
-      fonts:
-        - asset: assets/fonts/Pacifico-Regular.ttf
+  # fonts:
+  #   - family: Pacifico
+  #     fonts:
+  #       - asset: assets/fonts/Pacifico-Regular.ttf
 
-    - family: ReemKufi
-      fonts:
-        - asset: assets/fonts/ReemKufiInk-Regular.ttf
+  #   - family: ReemKufi
+  #     fonts:
+  #       - asset: assets/fonts/ReemKufiInk-Regular.ttf
 
-    - family: ArefRuqaa
-      fonts:
-        - asset: assets/fonts/ArefRuqaa-Regular.ttf
-        - asset: assets/fonts/ArefRuqaa-Bold.ttf
-          weight: 700
-          # style: bold
+  #   - family: ArefRuqaa
+  #     fonts:
+  #       - asset: assets/fonts/ArefRuqaa-Regular.ttf
+  #       - asset: assets/fonts/ArefRuqaa-Bold.ttf
+  #         weight: 700
+  # style: bold
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
@@ -90,3 +90,4 @@ flutter_assets:
   assets_path: assets/images
   output_path: lib/core/constants/
   filename: assets.dart
+  class_name: Assets

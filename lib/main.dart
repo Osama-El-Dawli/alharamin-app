@@ -20,7 +20,10 @@ class AlharaminApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp.router(
-        theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          elevatedButtonTheme: ElevatedButtonThemeData(),
+        ),
         debugShowCheckedModeBanner: false,
         routerConfig: router,
       ),
