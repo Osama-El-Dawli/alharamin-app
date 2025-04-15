@@ -1,19 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:alharamin_app/core/routes/app_routes.dart';
+import 'package:alharamin_app/features/on_boarding/presentation/screens/on_boarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
   routes: [
     GoRoute(
-      path: '/',
-      builder:
-          (context, state) => const Scaffold(
-            body: Center(
-              child: Text(
-                'Hello Guys !',
-                style: TextStyle(color: Color(0xff8C822D), fontSize: 30),
-              ),
-            ),
-          ),
+      path: AppRoutes.onBoarding,
+      builder: (context, state) => const OnBoardingScreen(),
     ),
   ],
 );
