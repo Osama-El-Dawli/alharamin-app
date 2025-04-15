@@ -17,7 +17,7 @@ class TextAndButton extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: Text(
-              'Manage and schedule all of your medical appointments easily with Docdoc to get a new experience.',
+              'Manage and schedule all of your medical appointments easily with Alharamin to get a new experience.',
               textAlign: TextAlign.center,
               style: Styles.font12W400Grey,
             ),
@@ -25,7 +25,7 @@ class TextAndButton extends StatelessWidget {
           SizedBox(height: 42.h),
           CustomButton(
             text: 'Get Started',
-            onPressed: () => context.push(AppRoutes.login),
+            onPressed: () => context.push(AppRoutes.loginSelection),
           ),
           SizedBox(height: 42.h),
         ],

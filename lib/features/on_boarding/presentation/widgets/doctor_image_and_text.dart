@@ -10,7 +10,7 @@ class DoctorImageAndText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(Assets.assetsImagesOnBoardingBack),
+        Image.asset(Assets.assetsImagesLogoBackground),
         Positioned(
           right: 12.w,
           left: 0,
