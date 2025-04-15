@@ -26,4 +26,10 @@ abstract class Styles {
     fontWeight: FontWeight.w600,
     color: Colors.white,
   );
+
+  static final TextStyle font24W600Primary = TextStyle(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.primary,
+  );
 }
