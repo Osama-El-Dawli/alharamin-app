@@ -25,5 +25,9 @@ class Assets {
   /// Assets for assetsImagesSplash
   /// assets/images/splash.png
   static const String assetsImagesSplash = "assets/images/splash.png";
+
+  /// Assets for assetsImagesStaff
+  /// assets/images/staff.png
+  static const String assetsImagesStaff = "assets/images/staff.png";
 }
 

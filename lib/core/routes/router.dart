@@ -1,4 +1,5 @@
 import 'package:alharamin_app/core/routes/app_routes.dart';
+import 'package:alharamin_app/features/home/presentation/screen/admin_home_screen.dart';
 import 'package:alharamin_app/features/login/presentation/screens/admin_login_screen.dart';
 import 'package:alharamin_app/features/login/presentation/screens/user_login_screen.dart';
 import 'package:alharamin_app/features/login/presentation/screens/login_selection_screen.dart';
@@ -26,5 +27,10 @@ final router = GoRouter(
       path: AppRoutes.adminLogin,
       builder: (context, state) => const AdminLoginScreen(),
     ),
+
+    GoRoute(
+      path: AppRoutes.adminHome,
+      builder: (context, state) => const AdminHomeScreen(),
+    )
   ],
 );
