@@ -1,11 +1,9 @@
 import 'package:alharamin_app/core/constants/assets.dart';
-import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
-import 'package:alharamin_app/features/login/presentation/widgets/custom_circle_avatar.dart';
+import 'package:alharamin_app/features/login/presentation/widgets/cusotm_choosing_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginSelectionBody extends StatelessWidget {
   const LoginSelectionBody({super.key});
@@ -33,28 +31,9 @@ class LoginSelectionBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(flex: 1),
-              Text('How Are You?', style: Styles.font35W700Primary),
+              Text('Who Are You?', style: Styles.font35W700Primary),
               Spacer(flex: 1),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomCircleAvatar(
-                    onTap: () {
-                      context.push(AppRoutes.adminLogin);
-                    },
-                    image: AssetImage(Assets.assetsImagesAdminAvatar),
-                    name: 'Admin',
-                  ),
-                  SizedBox(width: 22.w),
-                  CustomCircleAvatar(
-                    onTap: () {
-                      context.push(AppRoutes.userLogin);
-                    },
-                    image: AssetImage(Assets.assetsImagesPatientAvatar),
-                    name: 'Patient',
-                  ),
-                ],
-              ),
+              CustomChoosingWidget(),
               Spacer(flex: 1),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
