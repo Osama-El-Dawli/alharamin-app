@@ -1,4 +1,5 @@
 import 'package:alharamin_app/core/routes/router.dart';
+import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,14 @@ class AlharaminApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp.router(
-        theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: AppColors.primary,
+            selectionColor: AppColors.primary,
+            selectionHandleColor: AppColors.lighterGrey,
+          ),
+        ),
         debugShowCheckedModeBanner: false,
         routerConfig: router,
       ),

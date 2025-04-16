@@ -1,3 +1,4 @@
+import 'package:alharamin_app/features/login/presentation/widgets/admin_login_body.dart';
 import 'package:flutter/material.dart';
 
 class AdminLoginScreen extends StatelessWidget {
@@ -5,6 +6,6 @@ class AdminLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Admin Login Screen')));
+    return Scaffold(body: AdminLoginBody());
   }
 }

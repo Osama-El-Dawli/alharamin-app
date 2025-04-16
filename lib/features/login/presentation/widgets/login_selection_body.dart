@@ -13,38 +13,46 @@ class LoginSelectionBody extends StatelessWidget {
     return SafeArea(
       child: Stack(
         children: [
-          Center(child: Image.asset(Assets.assetsImagesLogoBackground)),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.lightPrimary,
-                  AppColors.lightPrimary.withAlpha(0),
-                ],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                stops: [0.1, 0.8],
+          Positioned.fill(
+            child: Image.asset(Assets.assetsImagesLogoBackground),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.lightPrimary,
+                    AppColors.lightPrimary.withAlpha(0),
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  stops: [0.1, 0.8],
+                ),
               ),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Spacer(flex: 1),
-              Text('Who Are You?', style: Styles.font35W700Primary),
-              Spacer(flex: 1),
-              CustomChoosingWidget(),
-              Spacer(flex: 1),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Text(
-                  'Tell us who you are by choosing a photo to start our appointment journey',
-                  style: Styles.font12W400Grey.copyWith(fontSize: 16.sp),
-                  textAlign: TextAlign.center,
-                ),
+
+          // Main content
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Spacer(flex: 2),
+                  Text('Who Are You?', style: Styles.font35W700Primary),
+                  SizedBox(height: 58.h),
+                  CustomChoosingWidget(),
+                  Spacer(flex: 2),
+                  Text(
+                    'Tell us who you are by choosing a photo to start our appointment journey',
+                    style: Styles.font12W400Grey.copyWith(fontSize: 16.sp),
+                    textAlign: TextAlign.center,
+                  ),
+                  Spacer(flex: 1),
+                ],
               ),
-              Spacer(flex: 1),
-            ],
+            ),
           ),
         ],
       ),
