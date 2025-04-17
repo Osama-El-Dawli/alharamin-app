@@ -22,6 +22,9 @@ class AlharaminApp extends StatelessWidget {
       splitScreenMode: true,
       child: MaterialApp.router(
         theme: ThemeData(
+          checkboxTheme: CheckboxThemeData(
+            side: BorderSide(color: AppColors.lightGrey),
+          ),
           scaffoldBackgroundColor: Colors.white,
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: AppColors.primary,

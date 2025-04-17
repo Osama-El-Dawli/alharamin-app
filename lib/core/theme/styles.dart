@@ -45,9 +45,27 @@ abstract class Styles {
     color: AppColors.darkGrey,
   );
 
+  static final TextStyle font14W500Primary = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    color: AppColors.primary,
+  );
+
   static final TextStyle font14W500LightGrey = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.lightGrey,
+  );
+
+  static final TextStyle font14W400Grey = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.grey,
+  );
+
+  static final TextStyle font28W700Primary = TextStyle(
+    fontSize: 28.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primary,
   );
 }

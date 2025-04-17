@@ -1,8 +1,8 @@
 import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/features/home/presentation/screen/admin_home_screen.dart';
-import 'package:alharamin_app/features/login/presentation/screens/admin_login_screen.dart';
-import 'package:alharamin_app/features/login/presentation/screens/user_login_screen.dart';
-import 'package:alharamin_app/features/login/presentation/screens/login_selection_screen.dart';
+import 'package:alharamin_app/features/login/admin_login/presentation/admin_login_screen.dart';
+import 'package:alharamin_app/features/login/user_login/presentation/user_login_screen.dart';
+import 'package:alharamin_app/features/login/selection_login/presentation/screens/login_selection_screen.dart';
 import 'package:alharamin_app/features/on_boarding/presentation/screens/on_boarding_screen.dart';
 import 'package:go_router/go_router.dart';
 

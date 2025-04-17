@@ -2,8 +2,8 @@ import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
-import 'package:alharamin_app/features/login/data/cubits/admin_login_cubit/admin_login_cubit.dart';
-import 'package:alharamin_app/features/login/presentation/widgets/terms_and_conditions.dart';
+import 'package:alharamin_app/features/login/admin_login/logic/cubits/admin_login_cubit/admin_login_cubit.dart';
+import 'package:alharamin_app/core/widgets/terms_and_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,7 +58,7 @@ class _AdminFormSectionState extends State<AdminFormSection> {
                     });
                   },
                   icon: Icon(
-                    isObscureText ? Icons.visibility : Icons.visibility_off,
+                    isObscureText ? Icons.visibility_off : Icons.visibility_off,
                   ),
                 ),
                 validator: (value) {
