@@ -58,7 +58,7 @@ class _AdminFormSectionState extends State<AdminFormSection> {
                     });
                   },
                   icon: Icon(
-                    isObscureText ? Icons.visibility_off : Icons.visibility_off,
+                    isObscureText ? Icons.visibility : Icons.visibility_off,
                   ),
                 ),
                 validator: (value) {

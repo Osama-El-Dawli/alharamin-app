@@ -14,6 +14,8 @@ class UserFormSection extends StatefulWidget {
 
 class _UserFormSectionState extends State<UserFormSection> {
   final formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool isObsecured = true;
   bool isChecked = false;
 
@@ -23,11 +25,27 @@ class _UserFormSectionState extends State<UserFormSection> {
       key: formKey,
       child: Column(
         children: [
-          CustomTextField(hintText: 'Email'),
+          CustomTextField(
+            hintText: 'Email',
+            controller: emailController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              return null;
+            },
+          ),
           SizedBox(height: 16.h),
           CustomTextField(
             hintText: 'Password',
+            controller: passwordController,
             obscureText: isObsecured,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your password';
+              }
+              return null;
+            },
             suffixIcon: IconButton(
               onPressed: () {
                 setState(() {
@@ -54,7 +72,12 @@ class _UserFormSectionState extends State<UserFormSection> {
             ],
           ),
           SizedBox(height: 16.h),
-          CustomButton(text: 'Login', onPressed: () {}),
+          CustomButton(
+            text: 'Login',
+            onPressed: () {
+              if (formKey.currentState!.validate()) {}
+            },
+          ),
         ],
       ),
     );
