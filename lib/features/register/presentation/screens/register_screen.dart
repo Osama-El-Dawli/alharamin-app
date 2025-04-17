@@ -1,3 +1,4 @@
+import 'package:alharamin_app/features/register/presentation/widgets/register_screen_body.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -5,6 +6,6 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Register Screen')));
+    return const Scaffold(body: RegisterScreenBody());
   }
 }

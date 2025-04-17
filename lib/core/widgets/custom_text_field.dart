@@ -1,15 +1,17 @@
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
-    required this.hintText,
+    this.hintText,
     this.textStyle,
     this.obscureText,
     this.suffixIcon,
+    this.prefixIcon,
     this.backgroundColor,
     this.contentPadding,
     this.focusedBorder,
@@ -19,13 +21,20 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.errorText,
     this.onChanged,
+    this.labelText,
+    this.labelStyle,
+    this.keyboardType,
+    this.prefixIconConstraints,
+    this.inputFormatters,
   });
 
-  final String hintText;
+  final String? hintText;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
+  final TextStyle? labelStyle;
   final bool? obscureText;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final Color? backgroundColor;
   final EdgeInsetsGeometry? contentPadding;
   final InputBorder? focusedBorder;
@@ -33,16 +42,25 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final String? errorText;
+  final String? labelText;
+  final TextInputType? keyboardType;
+  final BoxConstraints? prefixIconConstraints;
+  final List<TextInputFormatter>? inputFormatters;
   final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: keyboardType ?? TextInputType.text,
+      inputFormatters: inputFormatters,
       onChanged: onChanged,
       controller: controller,
       style: textStyle ?? Styles.font14W500DarkGrey,
       decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: labelStyle ?? Styles.font14W500Grey,
         errorText: errorText,
+        prefixIconConstraints: prefixIconConstraints,
         isDense: true,
         contentPadding:
             contentPadding ??
@@ -72,10 +90,11 @@ class CustomTextField extends StatelessWidget {
         ),
         filled: true,
         fillColor:
-            backgroundColor ?? AppColors.formBackgroundGrey.withAlpha(150),
+            backgroundColor ?? AppColors.formBackgroundGrey.withAlpha(200),
         hintText: hintText,
         hintStyle: hintStyle ?? Styles.font14W500LightGrey,
         suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
       ),
       obscureText: obscureText ?? false,
       validator: validator,

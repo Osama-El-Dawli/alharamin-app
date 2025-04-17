@@ -1,4 +1,5 @@
 import 'package:alharamin_app/core/routes/app_routes.dart';
+import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
@@ -49,7 +50,15 @@ class _AdminFormSectionState extends State<AdminFormSection> {
               ),
               SizedBox(height: 14.h),
               CustomTextField(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: const BorderSide(
+                    color: AppColors.primary,
+                    width: 1,
+                  ),
+                ),
                 hintText: 'Passcode',
+                labelText: 'Passcode',
                 obscureText: isObscureText,
                 suffixIcon: IconButton(
                   onPressed: () {

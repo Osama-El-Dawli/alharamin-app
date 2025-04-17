@@ -5,11 +5,12 @@ class HaveAccount extends StatelessWidget {
   const HaveAccount({
     super.key,
     required this.questionText,
-    required this.buttonText,
+    required this.buttonText, required this.onPressed,
   });
 
   final String questionText;
   final String buttonText;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,8 @@ class HaveAccount extends StatelessWidget {
           style: ButtonStyle(
             overlayColor: WidgetStatePropertyAll(Colors.transparent),
           ),
+          onPressed: onPressed,
           child: Text(buttonText, style: Styles.font14W500Primary),
-          onPressed: () {},
         ),
       ],
     );
