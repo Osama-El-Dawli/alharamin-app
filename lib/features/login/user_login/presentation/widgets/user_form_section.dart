@@ -53,11 +53,11 @@ class _UserFormSectionState extends State<UserFormSection> {
                   isObsecured = !isObsecured;
                 });
               },
-              icon: Icon(isObsecured ? Icons.visibility : Icons.visibility_off),
+              icon: Icon(isObsecured ? Icons.visibility_off : Icons.visibility),
             ),
           ),
           SizedBox(height: 16.h),
-          RememberMe(),
+          RememberMe(value: false, onChanged: (value) {}),
           SizedBox(height: 16.h),
           CustomButton(
             text: 'Login',

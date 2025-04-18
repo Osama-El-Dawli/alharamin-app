@@ -2,9 +2,10 @@ import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
-import 'package:alharamin_app/core/widgets/remember_me.dart';
+import 'package:alharamin_app/features/register/logic/cubits/register_cubit/register_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterFormSection extends StatefulWidget {
@@ -23,7 +24,9 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
-  bool isObsecured = true;
+  bool isObsecuredPassword = true;
+  bool isObsecuredConfirmPassword = true;
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +59,15 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
           ),
           SizedBox(height: 16.h),
           CustomTextField(
-            inputFormatters: [LengthLimitingTextInputFormatter(8)],
             hintText: 'Password',
-            obscureText: isObsecured,
+            obscureText: isObsecuredPassword,
             suffixIcon: IconButton(
-              icon: Icon(isObsecured ? Icons.visibility : Icons.visibility_off),
+              icon: Icon(
+                isObsecuredPassword ? Icons.visibility_off : Icons.visibility,
+              ),
               onPressed: () {
                 setState(() {
-                  isObsecured = !isObsecured;
+                  isObsecuredPassword = !isObsecuredPassword;
                 });
               },
             ),
@@ -79,14 +83,17 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
           ),
           SizedBox(height: 16.h),
           CustomTextField(
-            inputFormatters: [LengthLimitingTextInputFormatter(8)],
             hintText: 'Confirm Password',
-            obscureText: isObsecured,
+            obscureText: isObsecuredConfirmPassword,
             suffixIcon: IconButton(
-              icon: Icon(isObsecured ? Icons.visibility : Icons.visibility_off),
+              icon: Icon(
+                isObsecuredConfirmPassword
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+              ),
               onPressed: () {
                 setState(() {
-                  isObsecured = !isObsecured;
+                  isObsecuredConfirmPassword = !isObsecuredConfirmPassword;
                 });
               },
             ),
@@ -143,13 +150,18 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
             prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
             keyboardType: TextInputType.phone,
           ),
-          SizedBox(height: 8.h),
-          RememberMe(),
-          SizedBox(height: 8.h),
+          SizedBox(height: 20.h),
           CustomButton(
             text: 'Create Account',
             onPressed: () {
-              if (formKey.currentState!.validate()) {}
+              if (formKey.currentState!.validate()) {
+                context.read<RegisterCubit>().register(
+                  fullName: nameController.text.trim(),
+                  email: emailController.text.trim(),
+                  password: passwordController.text,
+                  phone: phoneNumberController.text.trim(),
+                );
+              }
             },
           ),
         ],
