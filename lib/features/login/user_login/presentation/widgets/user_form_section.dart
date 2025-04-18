@@ -1,7 +1,9 @@
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
 import 'package:alharamin_app/core/widgets/remember_me.dart';
+import 'package:alharamin_app/features/login/user_login/logic/cubit/user_login_cubit/user_login_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserFormSection extends StatefulWidget {
@@ -17,6 +19,7 @@ class _UserFormSectionState extends State<UserFormSection> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isObsecured = true;
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +60,25 @@ class _UserFormSectionState extends State<UserFormSection> {
             ),
           ),
           SizedBox(height: 16.h),
-          RememberMe(value: false, onChanged: (value) {}),
+          RememberMe(
+            value: rememberMe,
+            onChanged: (value) {
+              setState(() {
+                rememberMe = value!;
+              });
+            },
+          ),
           SizedBox(height: 16.h),
           CustomButton(
             text: 'Login',
             onPressed: () {
-              if (formKey.currentState!.validate()) {}
+              if (formKey.currentState!.validate()) {
+                context.read<UserLoginCubit>().userLogin(
+                  email: emailController.text.trim(),
+                  password: passwordController.text,
+                  rememberMe: rememberMe,
+                );
+              }
             },
           ),
         ],

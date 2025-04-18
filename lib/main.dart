@@ -1,3 +1,4 @@
+import 'package:alharamin_app/core/helpers/service_loactor.dart';
 import 'package:alharamin_app/core/routes/router.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/firebase_options.dart';
@@ -8,7 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const AlharaminApp());
+  await setupServiceLocator();
+  runApp(AlharaminApp());
 }
 
 class AlharaminApp extends StatelessWidget {

@@ -14,15 +14,7 @@ class RegisterScreenBody extends StatelessWidget {
   const RegisterScreenBody({super.key});
 
   @override
-/*************  ✨ Windsurf Command ⭐  *************/
-  /// Build the body of the registration screen.
-  ///
-  /// This widget is responsible for building the header section, the form section, the terms and conditions, and the have account widget.
-  ///
-  /// It also handles the loading state of the registration process, by displaying a loading overlay when the registration is in progress.
-  ///
-
-/*******  8ccafce4-e503-4f87-ba57-c5608c73c7ff  *******/  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return BlocConsumer<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {

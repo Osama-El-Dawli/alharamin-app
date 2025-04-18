@@ -17,8 +17,8 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String password,
     required String phone,
   }) async {
-    emit(RegisterLoading());
     try {
+      emit(RegisterLoading());
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
