@@ -18,12 +18,14 @@ class CustomCircleAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        GestureDetector(
-          onTap: onTap,
-          child: CircleAvatar(
-            radius: 73.r,
-            backgroundColor: AppColors.primary,
-            child: CircleAvatar(radius: 70.r, backgroundImage: image),
+        CircleAvatar(
+          radius: 73.r,
+          backgroundColor: AppColors.primary,
+          child: InkWell(
+            onTap: onTap,
+            child: Center(
+              child: CircleAvatar(radius: 70.r, backgroundImage: image),
+            ),
           ),
         ),
         SizedBox(height: 16.h),

@@ -9,37 +9,32 @@ import 'package:alharamin_app/features/register/presentation/screens/register_sc
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
+  initialLocation: AppRoutes.onBoarding,
   routes: [
     GoRoute(
       path: AppRoutes.onBoarding,
       builder: (context, state) => const OnBoardingScreen(),
     ),
-
     GoRoute(
       path: AppRoutes.loginSelection,
       builder: (context, state) => const LoginSelectionScreen(),
     ),
-
     GoRoute(
       path: AppRoutes.userLogin,
       builder: (context, state) => const UserLoginScreen(),
     ),
-
     GoRoute(
       path: AppRoutes.adminLogin,
       builder: (context, state) => const AdminLoginScreen(),
     ),
-
     GoRoute(
       path: AppRoutes.register,
       builder: (context, state) => const RegisterScreen(),
     ),
-
     GoRoute(
       path: AppRoutes.adminHome,
       builder: (context, state) => const AdminHomeScreen(),
     ),
-
     GoRoute(
       path: AppRoutes.userHome,
       builder: (context, state) => const UserHomeScreen(),
