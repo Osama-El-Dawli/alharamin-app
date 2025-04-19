@@ -11,19 +11,24 @@ class RememberMe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.r),
+    return InkWell(
+      onTap: () {
+        onChanged?.call(!value);
+      },
+      child: Row(
+        children: [
+          Checkbox(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.r),
+            ),
+            hoverColor: AppColors.primary,
+            activeColor: AppColors.primary,
+            value: value,
+            onChanged: onChanged,
           ),
-          hoverColor: AppColors.primary,
-          activeColor: AppColors.primary,
-          value: value,
-          onChanged: onChanged,
-        ),
-        Text('Remember me', style: Styles.font14W400Grey),
-      ],
+          Text('Remember me', style: Styles.font14W400Grey),
+        ],
+      ),
     );
   }
 }

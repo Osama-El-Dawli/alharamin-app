@@ -28,7 +28,7 @@ class UserLoginBody extends StatelessWidget {
       builder: (context, state) {
         final bool isLoading = state is UserLoginLoading;
         final bool isAutoLoginChecking =
-            state is UserLoginInitial && (state).isCheckingAutoLogin;
+            state is UserLoginInitial && state.isCheckingAutoLogin;
 
         return Stack(
           children: [
