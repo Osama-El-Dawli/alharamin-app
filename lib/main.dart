@@ -18,8 +18,11 @@ class AlharaminApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    Size designSize = width > 600 ? Size(1440, 900) : Size(375, 812);
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: designSize,
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp.router(

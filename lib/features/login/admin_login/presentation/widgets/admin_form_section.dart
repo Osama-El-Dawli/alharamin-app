@@ -94,8 +94,12 @@ class _AdminFormSectionState extends State<AdminFormSection> {
               SizedBox(height: 30.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 22.w),
-                child: TermsAndConditions(),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: TermsAndConditions(),
+                ),
               ),
+              SizedBox(height: 32.h),
             ],
           ),
         );
