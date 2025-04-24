@@ -1,5 +1,5 @@
-import 'package:alharamin_app/features/register/logic/cubits/register_cubit/register_cubit.dart';
-import 'package:alharamin_app/features/register/presentation/widgets/register_screen_body.dart';
+import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
+import 'package:alharamin_app/features/auth/presentation/widgets/register_screen_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +10,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => RegisterCubit(),
+        create: (context) => AuthCubit(),
         child: RegisterScreenBody(),
       ),
     );

@@ -3,8 +3,8 @@ import 'package:alharamin_app/core/widgets/have_account.dart';
 import 'package:alharamin_app/core/widgets/loading_overlay.dart';
 import 'package:alharamin_app/core/widgets/registeration_header_section.dart';
 import 'package:alharamin_app/core/widgets/terms_and_conditions.dart';
-import 'package:alharamin_app/features/register/logic/cubits/register_cubit/register_cubit.dart';
-import 'package:alharamin_app/features/register/presentation/widgets/register_form_section.dart';
+import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
+import 'package:alharamin_app/features/auth/presentation/widgets/register_form_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,18 +14,18 @@ class RegisterScreenBody extends StatelessWidget {
   const RegisterScreenBody({super.key});
 
   @override
-Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubit, RegisterState>(
+  Widget build(BuildContext context) {
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is RegisterSuccess) {
+        if (state is AuthSuccess) {
           snackBar(context, content: 'Registration successful');
           context.pop();
-        } else if (state is RegisterFailure) {
+        } else if (state is AuthFailure) {
           snackBar(context, content: state.errMessage);
         }
       },
       builder: (context, state) {
-        final bool isLoading = state is RegisterLoading;
+        final bool isLoading = state is AuthLoading;
         return Stack(
           children: [
             Scaffold(

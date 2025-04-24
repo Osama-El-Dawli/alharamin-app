@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:alharamin_app/core/routes/app_routes.dart';
-import 'package:alharamin_app/features/home/presentation/screen/admin_home_screen.dart';
+import 'package:alharamin_app/features/admin/presentation/screens/admin_home_screen.dart';
 import 'package:alharamin_app/features/home/presentation/screen/user_home_screen.dart';
-import 'package:alharamin_app/features/login/admin_login/presentation/admin_login_screen.dart';
-import 'package:alharamin_app/features/login/user_login/presentation/user_login_screen.dart';
-import 'package:alharamin_app/features/login/selection_login/presentation/screens/login_selection_screen.dart';
+import 'package:alharamin_app/features/admin/presentation/screens/admin_login_screen.dart';
+import 'package:alharamin_app/features/auth/presentation/screens/user_login_screen.dart';
 import 'package:alharamin_app/features/on_boarding/presentation/screens/on_boarding_screen.dart';
-import 'package:alharamin_app/features/register/presentation/screens/register_screen.dart';
+import 'package:alharamin_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+
+bool isMobile() => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+bool isDesktop() =>
+    !kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux);
 
 final router = GoRouter(
   initialLocation: AppRoutes.onBoarding,
@@ -16,8 +22,17 @@ final router = GoRouter(
       builder: (context, state) => const OnBoardingScreen(),
     ),
     GoRoute(
-      path: AppRoutes.loginSelection,
-      builder: (context, state) => const LoginSelectionScreen(),
+      path: AppRoutes.login,
+      redirect: (context, state) {
+        if (kIsWeb) {
+          return AppRoutes.adminLogin;
+        } else if (isMobile()) {
+          return AppRoutes.userLogin;
+        } else if (isDesktop()) {
+          return AppRoutes.adminLogin;
+        }
+        return null;
+      },
     ),
     GoRoute(
       path: AppRoutes.userLogin,

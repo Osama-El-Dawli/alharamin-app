@@ -3,7 +3,7 @@ import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
-import 'package:alharamin_app/features/login/admin_login/logic/cubits/admin_login_cubit/admin_login_cubit.dart';
+import 'package:alharamin_app/features/admin/logic/cubits/admin_login_cubit/admin_login_cubit.dart';
 import 'package:alharamin_app/core/widgets/terms_and_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +40,7 @@ class _AdminFormSectionState extends State<AdminFormSection> {
         return Form(
           key: formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Enter Passcode',
@@ -48,7 +48,7 @@ class _AdminFormSectionState extends State<AdminFormSection> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(height: 14.h),
+              SizedBox(height: 28.h),
               CustomTextField(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16.r),
