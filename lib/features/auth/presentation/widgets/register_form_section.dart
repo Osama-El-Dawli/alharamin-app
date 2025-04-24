@@ -2,7 +2,7 @@ import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
-import 'package:alharamin_app/features/register/logic/cubits/register_cubit/register_cubit.dart';
+import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,7 +155,7 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
             text: 'Create Account',
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                context.read<RegisterCubit>().register(
+                context.read<AuthCubit>().register(
                   fullName: nameController.text.trim(),
                   email: emailController.text.trim(),
                   password: passwordController.text,
