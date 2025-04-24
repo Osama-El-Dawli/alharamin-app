@@ -101,6 +101,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   // Logout
   Future<void> logout() async {
+    emit(AuthLoading());
     await _auth.signOut();
     await _prefs.removeData(key: 'user_token');
     emit(AuthInitial(isCheckingAutoLogin: false));

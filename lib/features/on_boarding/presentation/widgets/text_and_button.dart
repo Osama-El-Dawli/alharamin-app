@@ -25,7 +25,7 @@ class TextAndButton extends StatelessWidget {
           SizedBox(height: 42.h),
           CustomButton(
             text: 'Get Started',
-            onPressed: () => context.push(AppRoutes.loginSelection),
+            onPressed: () => context.push(AppRoutes.login),
           ),
           SizedBox(height: 42.h),
         ],
