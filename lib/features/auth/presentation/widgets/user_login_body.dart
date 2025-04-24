@@ -4,8 +4,8 @@ import 'package:alharamin_app/core/widgets/have_account.dart';
 import 'package:alharamin_app/core/widgets/loading_overlay.dart';
 import 'package:alharamin_app/core/widgets/registeration_header_section.dart';
 import 'package:alharamin_app/core/widgets/terms_and_conditions.dart';
-import 'package:alharamin_app/features/login/user_login/logic/cubit/user_login_cubit/user_login_cubit.dart';
-import 'package:alharamin_app/features/login/user_login/presentation/widgets/user_form_section.dart';
+import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
+import 'package:alharamin_app/features/auth/presentation/widgets/user_form_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,19 +16,19 @@ class UserLoginBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserLoginCubit, UserLoginState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is UserLoginSuccess) {
+        if (state is AuthSuccess) {
           snackBar(context, content: 'Login successful');
           context.go(AppRoutes.userHome);
-        } else if (state is UserLoginFailure) {
+        } else if (state is AuthFailure) {
           snackBar(context, content: state.errMessage);
         }
       },
       builder: (context, state) {
-        final bool isLoading = state is UserLoginLoading;
+        final bool isLoading = state is AuthLoading;
         final bool isAutoLoginChecking =
-            state is UserLoginInitial && state.isCheckingAutoLogin;
+            state is AuthInitial && state.isCheckingAutoLogin;
 
         return Stack(
           children: [

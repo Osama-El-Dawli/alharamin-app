@@ -1,7 +1,7 @@
 import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
-import 'package:alharamin_app/features/login/admin_login/logic/cubits/admin_login_cubit/admin_login_cubit.dart';
-import 'package:alharamin_app/features/login/admin_login/presentation/widgets/admin_form_section.dart';
+import 'package:alharamin_app/features/admin/admin_login/logic/cubits/admin_login_cubit/admin_login_cubit.dart';
+import 'package:alharamin_app/features/admin/admin_login/presentation/widgets/admin_form_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

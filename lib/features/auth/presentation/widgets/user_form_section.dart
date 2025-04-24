@@ -1,7 +1,7 @@
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
 import 'package:alharamin_app/core/widgets/remember_me.dart';
-import 'package:alharamin_app/features/login/user_login/logic/cubit/user_login_cubit/user_login_cubit.dart';
+import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,7 +73,7 @@ class _UserFormSectionState extends State<UserFormSection> {
             text: 'Login',
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                context.read<UserLoginCubit>().userLogin(
+                context.read<AuthCubit>().login(
                   email: emailController.text.trim(),
                   password: passwordController.text,
                   rememberMe: rememberMe,

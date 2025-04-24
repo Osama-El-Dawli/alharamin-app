@@ -1,7 +1,7 @@
 import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
-import 'package:alharamin_app/features/login/selection_login/presentation/widgets/cusotm_choosing_widget.dart';
+import 'package:alharamin_app/features/admin/selection_login/presentation/widgets/cusotm_choosing_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

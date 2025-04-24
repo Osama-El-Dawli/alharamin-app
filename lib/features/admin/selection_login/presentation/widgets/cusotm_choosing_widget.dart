@@ -1,6 +1,6 @@
 import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/routes/app_routes.dart';
-import 'package:alharamin_app/features/login/selection_login/presentation/widgets/custom_circle_avatar.dart';
+import 'package:alharamin_app/features/admin/selection_login/presentation/widgets/custom_circle_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
