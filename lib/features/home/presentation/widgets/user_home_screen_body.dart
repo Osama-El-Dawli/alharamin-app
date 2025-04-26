@@ -1,4 +1,6 @@
+import 'package:alharamin_app/features/home/data/models/speciality_model.dart';
 import 'package:alharamin_app/features/home/presentation/widgets/chat_bot_widget.dart';
+import 'package:alharamin_app/features/home/presentation/widgets/speciality_card.dart';
 import 'package:alharamin_app/features/home/presentation/widgets/user_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,13 +12,32 @@ class UserHomeScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            UserName(userName: 'Osama'),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-              child: ChatBotWidget(),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(child: UserName(userName: 'Osama')),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                child: ChatBotWidget(),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 20.h),
+              sliver: SliverGrid.builder(
+                itemCount: specialityNames.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {},
+                    child: SpecialityCard(specialityModel: specialities[index]),
+                  );
+                },
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 185 / 220,
+                  crossAxisSpacing: 12.w,
+                  mainAxisSpacing: 12.h,
+                ),
+              ),
             ),
           ],
         ),

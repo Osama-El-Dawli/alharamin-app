@@ -13,7 +13,7 @@ class ChatBotWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(50),
       child: Container(
         decoration: BoxDecoration(color: AppColors.primary),
-        height: 195.h,
+        height: 190.h,
         width: double.infinity,
         child: Stack(
           clipBehavior: Clip.hardEdge, // Hides overflow content
@@ -27,7 +27,7 @@ class ChatBotWidget extends StatelessWidget {
             ),
             Positioned(
               top: 16.h,
-              left: 16.w,
+              left: 18.w,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -43,22 +43,22 @@ class ChatBotWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  InkWell(
-                    onTap: () {},
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      padding: EdgeInsets.all(10.h),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: const Color(0xC2FFFFFF),
+                  TextButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll<Color>(
+                        Color(0xC2FFFFFF),
                       ),
-                      child: Text(
-                        'Go to ChatBot',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xffA25D5D),
-                        ),
+                      overlayColor: WidgetStatePropertyAll<Color>(
+                        AppColors.lighterGrey,
+                      ),
+                    ),
+                    child: Text(
+                      'Go to ChatBot',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xffA25D5D),
                       ),
                     ),
                   ),

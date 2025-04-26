@@ -86,4 +86,10 @@ abstract class Styles {
     fontWeight: FontWeight.w700,
     color: Colors.white,
   );
+
+  static final TextStyle font20w600Primary = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: AppColors.primary,
+  );
 }
