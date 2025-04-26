@@ -74,4 +74,16 @@ abstract class Styles {
     fontWeight: FontWeight.w500,
     color: AppColors.grey,
   );
+
+  static final TextStyle font16W700Primary = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primary,
+  );
+
+  static final TextStyle font24W700White = TextStyle(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+  );
 }
