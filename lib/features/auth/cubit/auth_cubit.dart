@@ -1,3 +1,4 @@
+import 'package:alharamin_app/features/auth/models/user_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -23,11 +24,17 @@ class AuthCubit extends Cubit<AuthState> {
       try {
         await _auth.currentUser?.getIdToken(true);
         final user = _auth.currentUser;
+
         if (user != null) {
           final doc = await _fireStore.collection('users').doc(user.uid).get();
-          final name = doc.data()?['fullName'] ?? '';
-          emit(AuthSuccess(userName: name));
-          return;
+
+          if (doc.exists) {
+            final data = doc.data()!;
+            final userModel = UserModel.fromJson(data);
+
+            emit(AuthSuccess(user: userModel));
+            return;
+          }
         }
       } catch (_) {
         await _prefs.removeData(key: 'user_token');
@@ -35,6 +42,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
     emit(AuthInitial(isCheckingAutoLogin: false));
   }
+
+  bool get isLoggedIn => state is AuthSuccess;
 
   // User login
   Future<void> login({
@@ -50,6 +59,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       final user = userCredential.user!;
+
       if (rememberMe) {
         final token = await user.getIdToken();
         await _prefs.saveData(key: 'user_token', value: token);
@@ -58,9 +68,10 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       final doc = await _fireStore.collection('users').doc(user.uid).get();
-      final name = doc.data()?['fullName'] ?? '';
+      final data = doc.data()!;
+      final userModel = UserModel.fromJson(data);
 
-      emit(AuthSuccess(userName: name));
+      emit(AuthSuccess(user: userModel));
     } on FirebaseAuthException catch (e) {
       emit(AuthFailure(errMessage: e.message ?? 'An unknown error occurred'));
     } catch (e) {
@@ -83,15 +94,17 @@ class AuthCubit extends Cubit<AuthState> {
 
       final uid = userCredential.user!.uid;
 
-      await _fireStore.collection('users').doc(uid).set({
-        'uid': uid,
-        'fullName': fullName,
-        'email': email,
-        'phone': phone,
-        'role': 'patient',
-      });
+      final userModel = UserModel(
+        uid: uid,
+        fullName: fullName,
+        email: email,
+        phone: phone,
+        role: 'patient',
+      );
 
-      emit(AuthSuccess(userName: fullName));
+      await _fireStore.collection('users').doc(uid).set(userModel.toJson());
+
+      emit(AuthSuccess(user: userModel));
     } on FirebaseAuthException catch (e) {
       emit(AuthFailure(errMessage: e.message ?? 'An unknown error occurred'));
     } catch (e) {

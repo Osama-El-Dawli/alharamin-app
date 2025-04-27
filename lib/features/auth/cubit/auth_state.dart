@@ -17,11 +17,11 @@ class AuthInitial extends AuthState {
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final String userName;
-  const AuthSuccess({required this.userName});
+  final UserModel user;
+  const AuthSuccess({required this.user});
 
   @override
-  List<Object?> get props => [userName];
+  List<Object?> get props => [user];
 }
 
 class AuthFailure extends AuthState {
