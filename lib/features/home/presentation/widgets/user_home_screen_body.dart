@@ -1,3 +1,4 @@
+import 'package:alharamin_app/features/auth/models/user_model.dart';
 import 'package:alharamin_app/features/home/data/models/speciality_model.dart';
 import 'package:alharamin_app/features/home/presentation/widgets/chat_bot_widget.dart';
 import 'package:alharamin_app/features/home/presentation/widgets/speciality_card.dart';
@@ -6,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserHomeScreenBody extends StatelessWidget {
-  const UserHomeScreenBody({super.key});
+  const UserHomeScreenBody({super.key, required this.user});
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class UserHomeScreenBody extends StatelessWidget {
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: UserName(userName: 'Osama')),
+            SliverToBoxAdapter(child: UserName(userName: user.fullName)),
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),

@@ -19,8 +19,7 @@ class UserLoginBody extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          snackBar(context, content: 'Login successful');
-          context.go(AppRoutes.userHome);
+          context.go(AppRoutes.userHome, extra: state.user);
         } else if (state is AuthFailure) {
           snackBar(context, content: state.errMessage);
         }

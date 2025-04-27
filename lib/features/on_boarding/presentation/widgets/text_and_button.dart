@@ -1,12 +1,11 @@
-import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class TextAndButton extends StatelessWidget {
-  const TextAndButton({super.key});
+  const TextAndButton({super.key, required this.onPressed});
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +22,7 @@ class TextAndButton extends StatelessWidget {
             ),
           ),
           SizedBox(height: 42.h),
-          CustomButton(
-            text: 'Get Started',
-            onPressed: () => context.push(AppRoutes.login),
-          ),
+          CustomButton(text: 'Get Started', onPressed: onPressed),
           SizedBox(height: 42.h),
         ],
       ),
