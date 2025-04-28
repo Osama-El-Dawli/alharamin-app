@@ -5,18 +5,48 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:alharamin_app/core/helpers/chache_helper.dart';
 import 'package:alharamin_app/core/helpers/service_loactor.dart';
+import 'package:flutter/material.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  @override
+  Future<void> close() {
+    emailController.dispose();
+    passwordController.dispose();
+    phoneController.dispose();
+    fullNameController.dispose();
+    confirmPasswordController.dispose();
+    return super.close();
+  }
+
   AuthCubit() : super(AuthInitial(isCheckingAutoLogin: true)) {
     _checkAutoLogin();
   }
+
+  String? fullName;
+  String? email;
+  String? password;
+  String? phone;
+  bool rememberMe = false;
+  GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   final _auth = FirebaseAuth.instance;
   final _fireStore = FirebaseFirestore.instance;
   final _prefs = getIt<CacheHelper>();
 
+  toggleRememberMe() {
+    rememberMe = !rememberMe;
+    emit(RememberMeState(rememberMe: rememberMe));
+  }
 
   // Auto login check
   Future<void> _checkAutoLogin() async {
@@ -47,16 +77,12 @@ class AuthCubit extends Cubit<AuthState> {
   bool get isLoggedIn => state is AuthSuccess;
 
   // User login
-  Future<void> login({
-    required String email,
-    required String password,
-    required bool rememberMe,
-  }) async {
+  Future<void> login() async {
     try {
       emit(AuthLoading());
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: email!,
+        password: password!,
       );
 
       final user = userCredential.user!;
@@ -87,25 +113,20 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // User registration
-  Future<void> register({
-    required String fullName,
-    required String email,
-    required String password,
-    required String phone,
-  }) async {
+  Future<void> register() async {
     try {
       emit(AuthLoading());
 
       UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email!, password: password!);
 
       final uid = userCredential.user!.uid;
 
       final userModel = UserModel(
         uid: uid,
-        fullName: fullName,
-        email: email,
-        phone: phone,
+        fullName: fullName!,
+        email: email!,
+        phone: phone!,
         role: 'patient',
       );
 

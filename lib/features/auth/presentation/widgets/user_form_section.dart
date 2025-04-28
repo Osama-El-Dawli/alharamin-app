@@ -6,30 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class UserFormSection extends StatefulWidget {
-  const UserFormSection({super.key});
-
-  @override
-  State<UserFormSection> createState() => _UserFormSectionState();
-}
-
-class _UserFormSectionState extends State<UserFormSection> {
-  final formKey = GlobalKey<FormState>();
+class UserFormSection extends StatelessWidget {
+  UserFormSection({super.key});
   final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool isObsecured = true;
-  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
+    AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     return Form(
-      key: formKey,
+      key: authCubit.loginFormKey,
       child: Column(
         children: [
           CustomTextField(
             hintText: 'Email',
-            controller: emailController,
+            onChanged: (email) {
+              authCubit.email = email.trim();
+            },
+            controller: authCubit.emailController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
@@ -42,42 +35,27 @@ class _UserFormSectionState extends State<UserFormSection> {
           SizedBox(height: 16.h),
           CustomTextField(
             hintText: 'Password',
-            controller: passwordController,
-            obscureText: isObsecured,
+            obscureText: true,
+            onChanged: (password) {
+              authCubit.password = password;
+            },
+            controller: authCubit.passwordController,
+            // obscureText: isObsecured,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your password';
               }
               return null;
             },
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  isObsecured = !isObsecured;
-                });
-              },
-              icon: Icon(isObsecured ? Icons.visibility_off : Icons.visibility),
-            ),
           ),
           SizedBox(height: 16.h),
-          RememberMe(
-            value: rememberMe,
-            onChanged: (value) {
-              setState(() {
-                rememberMe = value!;
-              });
-            },
-          ),
+          RememberMe(),
           SizedBox(height: 16.h),
           CustomButton(
             text: 'Login',
             onPressed: () {
-              if (formKey.currentState!.validate()) {
-                BlocProvider.of<AuthCubit>(context).login(
-                  email: emailController.text.trim(),
-                  password: passwordController.text,
-                  rememberMe: rememberMe,
-                );
+              if (authCubit.loginFormKey.currentState!.validate()) {
+                authCubit.login();
               }
             },
           ),

@@ -8,35 +8,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RegisterFormSection extends StatefulWidget {
-  const RegisterFormSection({super.key});
-
-  @override
-  State<RegisterFormSection> createState() => _RegisterFormSectionState();
-}
-
-class _RegisterFormSectionState extends State<RegisterFormSection> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+class RegisterFormSection extends StatelessWidget {
+  RegisterFormSection({super.key});
   final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  bool isObsecuredPassword = true;
-  bool isObsecuredConfirmPassword = true;
-  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
+    AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     return Form(
-      key: formKey,
+      key: authCubit.registerFormKey,
       child: Column(
         children: [
           CustomTextField(
             hintText: 'Full Name',
-            controller: nameController,
+            onChanged: (fullName) {
+              authCubit.fullName = fullName.trim();
+            },
+            controller: authCubit.fullNameController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your full name';
@@ -47,7 +35,10 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
           SizedBox(height: 16.h),
           CustomTextField(
             hintText: 'Email',
-            controller: emailController,
+            onChanged: (email) {
+              authCubit.email = email.trim();
+            },
+            controller: authCubit.emailController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
@@ -60,18 +51,11 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
           SizedBox(height: 16.h),
           CustomTextField(
             hintText: 'Password',
-            obscureText: isObsecuredPassword,
-            suffixIcon: IconButton(
-              icon: Icon(
-                isObsecuredPassword ? Icons.visibility_off : Icons.visibility,
-              ),
-              onPressed: () {
-                setState(() {
-                  isObsecuredPassword = !isObsecuredPassword;
-                });
-              },
-            ),
-            controller: passwordController,
+            obscureText: true,
+            onChanged: (password) {
+              authCubit.password = password;
+            },
+            controller: authCubit.passwordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your password';
@@ -84,27 +68,15 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
           SizedBox(height: 16.h),
           CustomTextField(
             hintText: 'Confirm Password',
-            obscureText: isObsecuredConfirmPassword,
-            suffixIcon: IconButton(
-              icon: Icon(
-                isObsecuredConfirmPassword
-                    ? Icons.visibility_off
-                    : Icons.visibility,
-              ),
-              onPressed: () {
-                setState(() {
-                  isObsecuredConfirmPassword = !isObsecuredConfirmPassword;
-                });
-              },
-            ),
-            controller: confirmPasswordController,
+            obscureText: true,
+            controller: authCubit.confirmPasswordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please confirm your password';
               } else if (value.length < 8) {
                 return 'Password must be at least 8 characters';
-              } else if (passwordController.text !=
-                  confirmPasswordController.text) {
+              } else if (authCubit.passwordController.text !=
+                  authCubit.confirmPasswordController.text) {
                 return 'Passwords do not match';
               }
               return null;
@@ -117,7 +89,10 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
               LengthLimitingTextInputFormatter(11),
             ],
             hintText: 'Phone Number',
-            controller: phoneNumberController,
+            onChanged: (phone) {
+              authCubit.phone = phone;
+            },
+            controller: authCubit.phoneController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your phone number';
@@ -154,13 +129,8 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
           CustomButton(
             text: 'Create Account',
             onPressed: () {
-              if (formKey.currentState!.validate()) {
-                BlocProvider.of<AuthCubit>(context).register(
-                  fullName: nameController.text.trim(),
-                  email: emailController.text.trim(),
-                  password: passwordController.text,
-                  phone: phoneNumberController.text.trim(),
-                );
+              if (authCubit.registerFormKey.currentState!.validate()) {
+                authCubit.register();
               }
             },
           ),

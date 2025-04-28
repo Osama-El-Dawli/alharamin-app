@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     this.hintText,
@@ -51,31 +51,44 @@ class CustomTextField extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _isObsecured = false;
+
+  @override
+  void initState() {
+    _isObsecured = widget.obscureText ?? false;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: keyboardType ?? TextInputType.text,
-      inputFormatters: inputFormatters,
-      onChanged: onChanged,
-      onFieldSubmitted: onFieldSubmitted,
-      controller: controller,
-      style: textStyle ?? Styles.font14W500DarkGrey,
+      keyboardType: widget.keyboardType ?? TextInputType.text,
+      inputFormatters: widget.inputFormatters,
+      onChanged: widget.onChanged,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      controller: widget.controller,
+      style: widget.textStyle ?? Styles.font14W500DarkGrey,
       decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: labelStyle ?? Styles.font14W500Grey,
-        errorText: errorText,
-        prefixIconConstraints: prefixIconConstraints,
+        labelText: widget.labelText,
+        labelStyle: widget.labelStyle ?? Styles.font14W500Grey,
+        errorText: widget.errorText,
+        prefixIconConstraints: widget.prefixIconConstraints,
         isDense: true,
         contentPadding:
-            contentPadding ??
+            widget.contentPadding ??
             EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         focusedBorder:
-            focusedBorder ??
+            widget.focusedBorder ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.r),
               borderSide: const BorderSide(color: AppColors.primary, width: 1),
             ),
         enabledBorder:
-            enabledBorder ??
+            widget.enabledBorder ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.r),
               borderSide: const BorderSide(
@@ -93,14 +106,27 @@ class CustomTextField extends StatelessWidget {
         ),
         filled: true,
         fillColor:
-            backgroundColor ?? AppColors.formBackgroundGrey.withAlpha(200),
-        hintText: hintText,
-        hintStyle: hintStyle ?? Styles.font14W500LightGrey,
-        suffixIcon: suffixIcon,
-        prefixIcon: prefixIcon,
+            widget.backgroundColor ??
+            AppColors.formBackgroundGrey.withAlpha(200),
+        hintText: widget.hintText,
+        hintStyle: widget.hintStyle ?? Styles.font14W500LightGrey,
+        suffixIcon:
+            widget.obscureText == true
+                ? IconButton(
+                  icon: Icon(
+                    _isObsecured ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isObsecured = !_isObsecured;
+                    });
+                  },
+                )
+                : widget.suffixIcon,
+        prefixIcon: widget.prefixIcon,
       ),
-      obscureText: obscureText ?? false,
-      validator: validator,
+      obscureText: _isObsecured,
+      validator: widget.validator,
     );
   }
 }

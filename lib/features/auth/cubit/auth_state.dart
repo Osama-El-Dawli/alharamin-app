@@ -31,3 +31,11 @@ class AuthFailure extends AuthState {
   @override
   List<Object?> get props => [errMessage];
 }
+
+class RememberMeState extends AuthState {
+  final bool rememberMe;
+  const RememberMeState({required this.rememberMe});
+
+  @override
+  List<Object?> get props => [rememberMe];
+}
