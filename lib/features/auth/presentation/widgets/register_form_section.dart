@@ -155,7 +155,7 @@ class _RegisterFormSectionState extends State<RegisterFormSection> {
             text: 'Create Account',
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                context.read<AuthCubit>().register(
+                BlocProvider.of<AuthCubit>(context).register(
                   fullName: nameController.text.trim(),
                   email: emailController.text.trim(),
                   password: passwordController.text,

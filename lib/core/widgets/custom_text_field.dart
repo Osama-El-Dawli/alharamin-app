@@ -26,6 +26,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.prefixIconConstraints,
     this.inputFormatters,
+    this.onFieldSubmitted,
   });
 
   final String? hintText;
@@ -47,6 +48,7 @@ class CustomTextField extends StatelessWidget {
   final BoxConstraints? prefixIconConstraints;
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String)? onChanged;
+  final void Function(String)? onFieldSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType ?? TextInputType.text,
       inputFormatters: inputFormatters,
       onChanged: onChanged,
+      onFieldSubmitted: onFieldSubmitted,
       controller: controller,
       style: textStyle ?? Styles.font14W500DarkGrey,
       decoration: InputDecoration(

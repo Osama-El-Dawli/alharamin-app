@@ -73,7 +73,7 @@ class _UserFormSectionState extends State<UserFormSection> {
             text: 'Login',
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                context.read<AuthCubit>().login(
+                BlocProvider.of<AuthCubit>(context).login(
                   email: emailController.text.trim(),
                   password: passwordController.text,
                   rememberMe: rememberMe,

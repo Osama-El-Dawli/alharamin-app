@@ -1,7 +1,5 @@
-import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/presentation/widgets/register_screen_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -9,10 +7,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => AuthCubit(),
-        child: RegisterScreenBody(),
-      ),
+      body: RegisterScreenBody(),
     );
   }
 }

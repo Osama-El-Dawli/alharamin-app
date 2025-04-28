@@ -1,3 +1,4 @@
+import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:alharamin_app/core/helpers/chache_helper.dart';
 
@@ -8,4 +9,5 @@ Future<void> setupServiceLocator() async {
   await cacheHelper.init();
 
   getIt.registerLazySingleton<CacheHelper>(() => cacheHelper);
+  getIt.registerLazySingleton<AuthCubit>(() => AuthCubit());
 }

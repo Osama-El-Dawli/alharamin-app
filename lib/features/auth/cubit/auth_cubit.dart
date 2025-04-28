@@ -17,6 +17,7 @@ class AuthCubit extends Cubit<AuthState> {
   final _fireStore = FirebaseFirestore.instance;
   final _prefs = getIt<CacheHelper>();
 
+
   // Auto login check
   Future<void> _checkAutoLogin() async {
     final token = _prefs.getData(key: 'user_token');
@@ -73,7 +74,13 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthSuccess(user: userModel));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(errMessage: e.message ?? 'An unknown error occurred'));
+      if (e.code == 'invalid-credential') {
+        emit(AuthFailure(errMessage: 'Invalid email or password.'));
+      } else if (e.code == 'wrong-password') {
+        emit(AuthFailure(errMessage: 'Wrong password provided for that user.'));
+      } else {
+        emit(AuthFailure(errMessage: e.toString()));
+      }
     } catch (e) {
       emit(AuthFailure(errMessage: e.toString()));
     }
@@ -106,7 +113,21 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthSuccess(user: userModel));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(errMessage: e.message ?? 'An unknown error occurred'));
+      String errorMessage = 'Registration failed, please try again.';
+
+      if (e.code == 'weak-password') {
+        emit(AuthFailure(errMessage: 'The password provided is too weak.'));
+      } else if (e.code == 'email-already-in-use') {
+        emit(
+          AuthFailure(errMessage: 'The account already exists for that email.'),
+        );
+      } else if (e.code == 'invalid-email') {
+        emit(AuthFailure(errMessage: 'Please enter a valid email'));
+      }
+
+      emit(AuthFailure(errMessage: errorMessage));
+    } on FirebaseException catch (e) {
+      emit(AuthFailure(errMessage: e.toString()));
     } catch (e) {
       emit(AuthFailure(errMessage: e.toString()));
     }

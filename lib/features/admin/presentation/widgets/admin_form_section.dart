@@ -3,7 +3,7 @@ import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
-import 'package:alharamin_app/features/admin/logic/cubits/admin_login_cubit/admin_login_cubit.dart';
+import 'package:alharamin_app/features/admin/cubits/admin_login_cubit/admin_login_cubit.dart';
 import 'package:alharamin_app/core/widgets/terms_and_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +77,9 @@ class _AdminFormSectionState extends State<AdminFormSection> {
                   return null;
                 },
                 errorText: state.errMessage,
-                onChanged: (_) => context.read<AdminLoginCubit>().clearError(),
+                onChanged:
+                    (_) =>
+                        BlocProvider.of<AdminLoginCubit>(context).clearError(),
                 controller: passcodeController,
               ),
               SizedBox(height: 30.h),
@@ -85,9 +87,9 @@ class _AdminFormSectionState extends State<AdminFormSection> {
                 text: 'Login',
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    context.read<AdminLoginCubit>().submitPasscode(
-                      passcodeController.text,
-                    );
+                    BlocProvider.of<AdminLoginCubit>(
+                      context,
+                    ).submitPasscode(passcodeController.text);
                   }
                 },
               ),

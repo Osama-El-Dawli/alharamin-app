@@ -1,9 +1,7 @@
 import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
-import 'package:alharamin_app/features/admin/logic/cubits/admin_login_cubit/admin_login_cubit.dart';
 import 'package:alharamin_app/features/admin/presentation/widgets/admin_form_section.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdminLoginBody extends StatelessWidget {
@@ -58,10 +56,7 @@ class AdminLoginBody extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Center(
-                        child: BlocProvider(
-                          create: (context) => AdminLoginCubit(),
-                          child: AdminFormSection(),
-                        ),
+                        child: AdminFormSection(),
                       ),
                     ),
                   ),
