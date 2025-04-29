@@ -6,6 +6,8 @@ import 'package:alharamin_app/features/admin/cubits/admin_login_cubit/admin_logi
 import 'package:alharamin_app/features/admin/presentation/screens/admin_home_screen.dart';
 import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/chatbot/presentation/screens/chat_bot_screen.dart';
+import 'package:alharamin_app/features/doctor/presentation/screens/doctor_screen.dart';
 import 'package:alharamin_app/features/home/presentation/screen/user_home_screen.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_login_screen.dart';
 import 'package:alharamin_app/features/auth/presentation/screens/user_login_screen.dart';
@@ -88,6 +90,16 @@ final router = GoRouter(
         final user = state.extra as UserModel;
         return UserHomeScreen(user: user);
       },
+    ),
+
+    GoRoute(
+      path: AppRoutes.doctor,
+      builder: (context, state) => DoctorScreen(),
+    ),
+
+    GoRoute(
+      path: AppRoutes.chatBot,
+      builder: (context, state) => ChatBotScreen(),
     ),
   ],
 );

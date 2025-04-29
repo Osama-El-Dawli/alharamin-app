@@ -1,8 +1,10 @@
 import 'package:alharamin_app/core/constants/assets.dart';
+import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatBotWidget extends StatelessWidget {
   const ChatBotWidget({super.key});
@@ -42,7 +44,9 @@ class ChatBotWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.push(AppRoutes.chatBot);
+                    },
                     style: ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll<Color>(
                         const Color(0xC2FFFFFF),
