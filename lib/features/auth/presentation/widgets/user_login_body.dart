@@ -1,4 +1,4 @@
-import 'package:alharamin_app/core/functions/snack_bar.dart';
+import 'package:alharamin_app/core/functions/flutter_toast.dart';
 import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/widgets/have_account.dart';
 import 'package:alharamin_app/core/widgets/loading_overlay.dart';
@@ -19,9 +19,10 @@ class UserLoginBody extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
+          flutterToast('Login successful');
           context.go(AppRoutes.userHome, extra: state.user);
         } else if (state is AuthFailure) {
-          snackBar(context, content: state.errMessage);
+          flutterToast(state.errMessage);
         }
       },
       builder: (context, state) {

@@ -25,7 +25,7 @@ class ChatBotWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 20.h),
+              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 20.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
