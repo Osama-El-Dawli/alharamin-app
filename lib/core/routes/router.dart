@@ -7,6 +7,7 @@ import 'package:alharamin_app/features/admin/presentation/screens/admin_home_scr
 import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
 import 'package:alharamin_app/features/chatbot/presentation/screens/chat_bot_screen.dart';
+import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
 import 'package:alharamin_app/features/doctor/presentation/screens/doctor_screen.dart';
 import 'package:alharamin_app/features/home/presentation/screen/user_home_screen.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_login_screen.dart';
@@ -94,7 +95,16 @@ final router = GoRouter(
 
     GoRoute(
       path: AppRoutes.doctor,
-      builder: (context, state) => DoctorScreen(),
+      builder: (context, state) {
+        final specialityName = state.extra as String;
+        return BlocProvider(
+          create:
+              (context) =>
+                  DoctorCubit()
+                    ..fetchDoctorsBySpeciality(speciality: specialityName),
+          child: DoctorScreen(specialityName: specialityName),
+        );
+      },
     ),
 
     GoRoute(

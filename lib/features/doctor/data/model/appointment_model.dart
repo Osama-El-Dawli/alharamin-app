@@ -20,7 +20,7 @@ class AppointmentModel {
       id: doc.id,
       available: data['available'],
       date: (data['date'] as Timestamp).toDate(),
-      patientId: data['patientId'],
+      patientId: data['patientId'] ?? '',
     );
   }
 

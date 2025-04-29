@@ -13,7 +13,7 @@ class DoctorModel {
     required this.speciality,
   });
 
-  factory DoctorModel.fromFirestore(DocumentSnapshot doc) {
+  factory DoctorModel.fromFirestore(DocumentSnapshot doc, String id) {
     final data = doc.data() as Map<String, dynamic>;
 
     return DoctorModel(

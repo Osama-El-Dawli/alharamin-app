@@ -32,7 +32,13 @@ class UserHomeScreenBody extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      context.push(AppRoutes.doctor);
+                      context.push(
+                        AppRoutes.doctor,
+                        extra:
+                            specialities[index].speacialityName
+                                .toLowerCase()
+                                .trim(),
+                      );
                     },
                     child: SpecialityCard(specialityModel: specialities[index]),
                   );
