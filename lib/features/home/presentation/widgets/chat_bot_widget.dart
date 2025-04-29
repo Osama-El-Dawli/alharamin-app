@@ -12,11 +12,10 @@ class ChatBotWidget extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(50),
       child: Container(
-        decoration: BoxDecoration(color: AppColors.primary),
-        height: 190.h,
         width: double.infinity,
+        decoration: BoxDecoration(color: AppColors.primary),
         child: Stack(
-          clipBehavior: Clip.hardEdge, // Hides overflow content
+          clipBehavior: Clip.hardEdge,
           children: [
             Positioned.fill(
               top: -10.h,
@@ -25,9 +24,8 @@ class ChatBotWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            Positioned(
-              top: 16.h,
-              left: 18.w,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 20.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -47,7 +45,7 @@ class ChatBotWidget extends StatelessWidget {
                     onPressed: () {},
                     style: ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll<Color>(
-                        Color(0xC2FFFFFF),
+                        const Color(0xC2FFFFFF),
                       ),
                       overlayColor: WidgetStatePropertyAll<Color>(
                         AppColors.lighterGrey,
