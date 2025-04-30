@@ -1,4 +1,5 @@
 import 'package:alharamin_app/core/constants/app_strings.dart';
+import 'package:alharamin_app/core/functions/capitalize.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
@@ -44,7 +45,7 @@ class DoctorCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Dr. ${doctorModel.name}',
+                  'Dr. ${doctorModel.nameEn.capitalizeEachWord()}',
                   style: Styles.font16W700Primary.copyWith(
                     color: AppColors.darkPrimary,
                   ),
@@ -53,7 +54,7 @@ class DoctorCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      doctorModel.speciality,
+                      doctorModel.speciality.capitalizeEachWord(),
                       style: Styles.font12W500DarkGrey,
                     ),
                     SizedBox(width: 8.w),

@@ -2,15 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorModel {
   final String id;
-  final String name;
+  final String nameEn;
+  final String nameAr;
   final String image;
   final String speciality;
+  final List<dynamic> appointments;
 
   const DoctorModel({
     required this.id,
-    required this.name,
+    required this.nameEn,
     required this.image,
     required this.speciality,
+    required this.nameAr,
+    required this.appointments,
   });
 
   factory DoctorModel.fromFirestore(DocumentSnapshot doc, String id) {
@@ -18,18 +22,22 @@ class DoctorModel {
 
     return DoctorModel(
       id: doc.id,
-      name: data['name'],
+      nameAr: data['nameAr'],
+      nameEn: data['nameEn'],
       image: data['image'],
       speciality: data['speciality'],
+      appointments: data['appointments'],
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
       'id': id,
-      'name': name,
+      'nameEn': nameEn,
+      'nameAr': nameAr,
       'image': image,
       'speciality': speciality,
+      'appointments': appointments,
     };
   }
 }

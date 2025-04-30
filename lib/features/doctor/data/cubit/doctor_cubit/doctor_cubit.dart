@@ -33,15 +33,15 @@ class DoctorCubit extends Cubit<DoctorState> {
     }
   }
 
-  Future<void> fetchDoctorsByName({required String name}) async {
+  Future<void> fetchDoctorsByName({required String nameEn}) async {
     emit(DoctorLoading());
 
     try {
       final snapShot =
           await _firestore
               .collection('doctors')
-              .where('name', isGreaterThanOrEqualTo: name)
-              .where('name', isLessThanOrEqualTo: '$name\uf8ff')
+              .where('name', isGreaterThanOrEqualTo: nameEn)
+              .where('name', isLessThanOrEqualTo: '$nameEn\uf8ff')
               .get();
 
       final doctors =

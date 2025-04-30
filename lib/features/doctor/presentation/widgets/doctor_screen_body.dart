@@ -39,7 +39,7 @@ class DoctorScreenBody extends StatelessWidget {
                     if (query.isNotEmpty) {
                       BlocProvider.of<DoctorCubit>(
                         context,
-                      ).fetchDoctorsByName(name: query);
+                      ).fetchDoctorsByName(nameEn: query);
                     }
                   },
                 ),
