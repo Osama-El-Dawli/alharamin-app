@@ -34,7 +34,15 @@ class DoctorScreenBody extends StatelessWidget {
               SizedBox(height: 15.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 18.w),
-                child: CustomSearchWidget(),
+                child: CustomSearchWidget(
+                  onSearch: (query) {
+                    if (query.isNotEmpty) {
+                      BlocProvider.of<DoctorCubit>(
+                        context,
+                      ).fetchDoctorsByName(name: query);
+                    }
+                  },
+                ),
               ),
               SizedBox(height: 12.h),
               Expanded(child: _buildDoctorList(state)),

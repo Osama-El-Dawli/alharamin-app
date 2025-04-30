@@ -32,4 +32,30 @@ class DoctorCubit extends Cubit<DoctorState> {
       emit(DoctorFailure(errMessage: e.toString()));
     }
   }
+
+  Future<void> fetchDoctorsByName({required String name}) async {
+    emit(DoctorLoading());
+
+    try {
+      final snapShot =
+          await _firestore
+              .collection('doctors')
+              .where('name', isGreaterThanOrEqualTo: name)
+              .where('name', isLessThanOrEqualTo: '$name\uf8ff')
+              .get();
+
+      final doctors =
+          snapShot.docs
+              .map((doc) => DoctorModel.fromFirestore(doc, doc.id))
+              .toList();
+
+      if (doctors.isEmpty) {
+        emit(DoctorEmpty(errMessage: 'No Doctors Found'));
+      } else {
+        emit(DoctorLoaded(doctors: doctors));
+      }
+    } catch (e) {
+      emit(DoctorFailure(errMessage: e.toString()));
+    }
+  }
 }

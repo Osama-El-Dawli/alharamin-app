@@ -20,6 +20,7 @@ class DoctorCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
+              clipBehavior: Clip.hardEdge,
               width: 80.w,
               height: 80.h,
               decoration: BoxDecoration(
@@ -43,7 +44,7 @@ class DoctorCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  doctorModel.name,
+                  'Dr. ${doctorModel.name}',
                   style: Styles.font16W700Primary.copyWith(
                     color: AppColors.darkPrimary,
                   ),

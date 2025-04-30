@@ -3,8 +3,24 @@ import 'package:alharamin_app/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CustomSearchWidget extends StatelessWidget {
-  const CustomSearchWidget({super.key});
+class CustomSearchWidget extends StatefulWidget {
+  const CustomSearchWidget({super.key, required this.onSearch});
+  final void Function(String) onSearch;
+
+  @override
+  State<CustomSearchWidget> createState() => _CustomSearchWidgetState();
+}
+
+class _CustomSearchWidgetState extends State<CustomSearchWidget> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      widget.onSearch(_controller.text.trim());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +28,7 @@ class CustomSearchWidget extends StatelessWidget {
       children: [
         Expanded(
           child: CustomTextField(
+            controller: _controller,
             hintText: 'Search',
             prefixIcon: Icon(
               FontAwesomeIcons.magnifyingGlass,
@@ -24,7 +41,9 @@ class CustomSearchWidget extends StatelessWidget {
             FontAwesomeIcons.magnifyingGlass,
             color: AppColors.primary,
           ),
-          onPressed: () {},
+          onPressed: () {
+            widget.onSearch(_controller.text.trim());
+          },
         ),
       ],
     );
