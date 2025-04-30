@@ -40,10 +40,13 @@ dependencies:
   flutter_native_splash: ^2.4.6
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.17
+  fluttertoast: ^8.2.12
+  font_awesome_flutter: ^10.8.0
   get_it: ^8.0.3
   go_router: ^14.8.1
   meta: ^1.16.0
   shared_preferences: ^2.5.3
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_lints: ^5.0.0

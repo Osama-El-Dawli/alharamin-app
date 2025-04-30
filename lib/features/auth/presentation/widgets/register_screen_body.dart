@@ -1,4 +1,4 @@
-import 'package:alharamin_app/core/functions/snack_bar.dart';
+import 'package:alharamin_app/core/functions/flutter_toast.dart';
 import 'package:alharamin_app/core/widgets/have_account.dart';
 import 'package:alharamin_app/core/widgets/loading_overlay.dart';
 import 'package:alharamin_app/core/widgets/registeration_header_section.dart';
@@ -18,10 +18,10 @@ class RegisterScreenBody extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          snackBar(context, content: 'Registration successful');
+          flutterToast('Registration successful');
           context.pop();
         } else if (state is AuthFailure) {
-          snackBar(context, content: state.errMessage);
+          flutterToast(state.errMessage);
         }
       },
       builder: (context, state) {

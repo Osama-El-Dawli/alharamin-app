@@ -1,3 +1,4 @@
+import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
 import 'package:alharamin_app/features/home/data/models/speciality_model.dart';
 import 'package:alharamin_app/features/home/presentation/widgets/chat_bot_widget.dart';
@@ -5,6 +6,7 @@ import 'package:alharamin_app/features/home/presentation/widgets/speciality_card
 import 'package:alharamin_app/features/home/presentation/widgets/user_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class UserHomeScreenBody extends StatelessWidget {
   const UserHomeScreenBody({super.key, required this.user});
@@ -29,7 +31,15 @@ class UserHomeScreenBody extends StatelessWidget {
                 itemCount: specialityNames.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.push(
+                        AppRoutes.doctor,
+                        extra:
+                            specialities[index].speacialityName
+                                .toLowerCase()
+                                .trim(),
+                      );
+                    },
                     child: SpecialityCard(specialityModel: specialities[index]),
                   );
                 },
