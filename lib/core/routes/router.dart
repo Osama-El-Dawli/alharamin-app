@@ -6,8 +6,10 @@ import 'package:alharamin_app/features/admin/cubits/admin_login_cubit/admin_logi
 import 'package:alharamin_app/features/admin/presentation/screens/admin_home_screen.dart';
 import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/booking/presentation/screens/booking_screen.dart';
 import 'package:alharamin_app/features/chatbot/presentation/screens/chat_bot_screen.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
+import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 import 'package:alharamin_app/features/doctor/presentation/screens/doctor_screen.dart';
 import 'package:alharamin_app/features/home/presentation/screen/user_home_screen.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_login_screen.dart';
@@ -104,6 +106,14 @@ final router = GoRouter(
                     ..fetchDoctorsBySpeciality(speciality: specialityName),
           child: DoctorScreen(specialityName: specialityName),
         );
+      },
+    ),
+
+    GoRoute(
+      path: AppRoutes.booking,
+      builder: (context, state) {
+        final doctorModel = state.extra as DoctorModel;
+        return BookingScreen(doctorModel: doctorModel);
       },
     ),
 

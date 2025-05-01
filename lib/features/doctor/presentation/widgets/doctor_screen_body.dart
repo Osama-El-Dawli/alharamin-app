@@ -1,4 +1,5 @@
 import 'package:alharamin_app/core/constants/assets.dart';
+import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/custom_search_widget.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/doctor_card.dart';
@@ -6,6 +7,7 @@ import 'package:alharamin_app/features/doctor/presentation/widgets/shimmer_docto
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DoctorScreenBody extends StatelessWidget {
@@ -79,7 +81,12 @@ class DoctorScreenBody extends StatelessWidget {
           final doctor = state.doctors[index];
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 8.h),
-            child: DoctorCard(doctorModel: doctor),
+            child: InkWell(
+              onTap: () {
+                context.push(AppRoutes.booking, extra: doctor);
+              },
+              child: DoctorCard(doctorModel: doctor),
+            ),
           );
         },
       );

@@ -8,5 +8,6 @@ abstract class AppRoutes {
   static const login = '/login';
   static const register = '/register';
   static const doctor = '/doctor';
+  static const booking = '/booking';
   static const chatBot = '/chatBot';
 }

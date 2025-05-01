@@ -40,8 +40,8 @@ class DoctorCubit extends Cubit<DoctorState> {
       final snapShot =
           await _firestore
               .collection('doctors')
-              .where('name', isGreaterThanOrEqualTo: nameEn)
-              .where('name', isLessThanOrEqualTo: '$nameEn\uf8ff')
+              .where('nameEn', isGreaterThanOrEqualTo: nameEn)
+              .where('nameEn', isLessThanOrEqualTo: '$nameEn\uf8ff')
               .get();
 
       final doctors =
