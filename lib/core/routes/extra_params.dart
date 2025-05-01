@@ -1,0 +1,16 @@
+import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
+
+class BookingScreenParams {
+  final DoctorModel doctorModel;
+  final UserModel userModel;
+
+  BookingScreenParams({required this.doctorModel, required this.userModel});
+}
+
+class DoctorScreeenParams {
+  final String specialityName;
+  final UserModel userModel;
+
+  DoctorScreeenParams({required this.specialityName, required this.userModel});
+}

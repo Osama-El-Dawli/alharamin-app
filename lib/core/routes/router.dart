@@ -2,14 +2,15 @@ import 'dart:io';
 
 import 'package:alharamin_app/core/helpers/service_loactor.dart';
 import 'package:alharamin_app/core/routes/app_routes.dart';
+import 'package:alharamin_app/core/routes/extra_params.dart';
 import 'package:alharamin_app/features/admin/cubits/admin_login_cubit/admin_login_cubit.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_home_screen.dart';
 import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/booking/data/cubit/booking_cubit.dart';
 import 'package:alharamin_app/features/booking/presentation/screens/booking_screen.dart';
 import 'package:alharamin_app/features/chatbot/presentation/screens/chat_bot_screen.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
-import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 import 'package:alharamin_app/features/doctor/presentation/screens/doctor_screen.dart';
 import 'package:alharamin_app/features/home/presentation/screen/user_home_screen.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_login_screen.dart';
@@ -98,13 +99,17 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.doctor,
       builder: (context, state) {
-        final specialityName = state.extra as String;
+        final doctorScreeenParams = state.extra as DoctorScreeenParams;
         return BlocProvider(
           create:
               (context) =>
-                  DoctorCubit()
-                    ..fetchDoctorsBySpeciality(speciality: specialityName),
-          child: DoctorScreen(specialityName: specialityName),
+                  DoctorCubit()..fetchDoctorsBySpeciality(
+                    speciality: doctorScreeenParams.specialityName,
+                  ),
+          child: DoctorScreen(
+            specialityName: doctorScreeenParams.specialityName,
+            userModel: doctorScreeenParams.userModel,
+          ),
         );
       },
     ),
@@ -112,8 +117,18 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.booking,
       builder: (context, state) {
-        final doctorModel = state.extra as DoctorModel;
-        return BookingScreen(doctorModel: doctorModel);
+        final bookingScreenParams = state.extra as BookingScreenParams;
+        return BlocProvider(
+          create:
+              (context) => BookingCubit(
+                doctor: bookingScreenParams.doctorModel,
+                patientId: bookingScreenParams.userModel.uid,
+              ),
+          child: BookingScreen(
+            doctorModel: bookingScreenParams.doctorModel,
+            userModel: bookingScreenParams.userModel,
+          ),
+        );
       },
     ),
 

@@ -19,9 +19,7 @@ class DoctorCubit extends Cubit<DoctorState> {
               .where('speciality', isEqualTo: speciality)
               .get();
       final doctors =
-          snapShot.docs
-              .map((doc) => DoctorModel.fromFirestore(doc, doc.id))
-              .toList();
+          snapShot.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList();
 
       if (doctors.isEmpty) {
         emit(DoctorEmpty(errMessage: 'No Doctors Found'));
@@ -45,9 +43,7 @@ class DoctorCubit extends Cubit<DoctorState> {
               .get();
 
       final doctors =
-          snapShot.docs
-              .map((doc) => DoctorModel.fromFirestore(doc, doc.id))
-              .toList();
+          snapShot.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList();
 
       if (doctors.isEmpty) {
         emit(DoctorEmpty(errMessage: 'No Doctors Found'));

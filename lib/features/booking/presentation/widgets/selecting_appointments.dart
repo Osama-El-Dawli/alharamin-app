@@ -1,36 +1,44 @@
+import 'package:alharamin_app/features/booking/data/cubit/booking_cubit.dart';
 import 'package:alharamin_app/features/booking/presentation/widgets/appointments_grid_view.dart';
 import 'package:alharamin_app/features/booking/presentation/widgets/date_selector_list_view.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:alharamin_app/core/theme/styles.dart';
 
 class SelectingAppointments extends StatelessWidget {
-  const SelectingAppointments({super.key, required this.doctorModel});
+  const SelectingAppointments({
+    super.key,
+    required this.doctorModel,
+    required this.onDateSelected,
+    required this.onTimeSelected,
+  });
+
   final DoctorModel doctorModel;
+  final Function(DateTime) onDateSelected;
+  final Function(String) onTimeSelected;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Select Date',
-            style: Styles.font16W600White.copyWith(color: Colors.black),
-          ),
-          SizedBox(height: 12.h),
-          DateSelectorListView(),
-          SizedBox(height: 20.h),
-          Text(
-            'Available Time',
-            style: Styles.font16W600White.copyWith(color: Colors.black),
-          ),
-          SizedBox(height: 16.h),
-          AppointmentsGrideView(doctorModel: doctorModel),
-        ],
-      ),
+    return Column(
+      children: [
+        DateSelectorListView(onDateSelected: onDateSelected),
+        SizedBox(height: 24.h),
+        BlocBuilder<BookingCubit, BookingState>(
+          builder: (context, state) {
+            if (state is DateSelectedState) {
+              return AppointmentsGridView(
+                appointments: state.availableAppointments,
+                onTimeSelected: onTimeSelected,
+                selectedTime: null,
+              );
+            }
+            return const SizedBox(
+              height: 200,
+            ); // Better fallback with fixed height
+          },
+        ),
+      ],
     );
   }
 }
