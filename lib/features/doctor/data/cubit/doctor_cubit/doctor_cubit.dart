@@ -19,9 +19,7 @@ class DoctorCubit extends Cubit<DoctorState> {
               .where('speciality', isEqualTo: speciality)
               .get();
       final doctors =
-          snapShot.docs
-              .map((doc) => DoctorModel.fromFirestore(doc, doc.id))
-              .toList();
+          snapShot.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList();
 
       if (doctors.isEmpty) {
         emit(DoctorEmpty(errMessage: 'No Doctors Found'));
@@ -40,14 +38,12 @@ class DoctorCubit extends Cubit<DoctorState> {
       final snapShot =
           await _firestore
               .collection('doctors')
-              .where('name', isGreaterThanOrEqualTo: nameEn)
-              .where('name', isLessThanOrEqualTo: '$nameEn\uf8ff')
+              .where('nameEn', isGreaterThanOrEqualTo: nameEn)
+              .where('nameEn', isLessThanOrEqualTo: '$nameEn\uf8ff')
               .get();
 
       final doctors =
-          snapShot.docs
-              .map((doc) => DoctorModel.fromFirestore(doc, doc.id))
-              .toList();
+          snapShot.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList();
 
       if (doctors.isEmpty) {
         emit(DoctorEmpty(errMessage: 'No Doctors Found'));

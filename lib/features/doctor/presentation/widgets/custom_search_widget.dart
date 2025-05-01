@@ -18,7 +18,7 @@ class _CustomSearchWidgetState extends State<CustomSearchWidget> {
   void initState() {
     super.initState();
     _controller.addListener(() {
-      widget.onSearch(_controller.text.trim());
+      widget.onSearch(_controller.text.toLowerCase().trim());
     });
   }
 
@@ -42,7 +42,7 @@ class _CustomSearchWidgetState extends State<CustomSearchWidget> {
             color: AppColors.primary,
           ),
           onPressed: () {
-            widget.onSearch(_controller.text.trim());
+            widget.onSearch(_controller.text.toLowerCase().trim());
           },
         ),
       ],

@@ -1,4 +1,5 @@
 import 'package:alharamin_app/core/routes/app_routes.dart';
+import 'package:alharamin_app/core/routes/extra_params.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
 import 'package:alharamin_app/features/home/data/models/speciality_model.dart';
 import 'package:alharamin_app/features/home/presentation/widgets/chat_bot_widget.dart';
@@ -34,10 +35,13 @@ class UserHomeScreenBody extends StatelessWidget {
                     onTap: () {
                       context.push(
                         AppRoutes.doctor,
-                        extra:
-                            specialities[index].speacialityName
-                                .toLowerCase()
-                                .trim(),
+                        extra: DoctorScreeenParams(
+                          specialityName:
+                              specialities[index].speacialityName
+                                  .toLowerCase()
+                                  .trim(),
+                          userModel: user,
+                        ),
                       );
                     },
                     child: SpecialityCard(specialityModel: specialities[index]),

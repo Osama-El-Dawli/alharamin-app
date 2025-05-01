@@ -2,34 +2,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppointmentModel {
   final String id;
-  final bool available;
-  final DateTime date;
+  final String doctorId;
   final String patientId;
+  final DateTime date;
+  final String time;
 
   const AppointmentModel({
     required this.id,
-    required this.available,
-    required this.date,
+    required this.doctorId,
     required this.patientId,
+    required this.date,
+    required this.time,
   });
 
   factory AppointmentModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+    final date = (data['date'] as Timestamp).toDate();
 
     return AppointmentModel(
       id: doc.id,
-      available: data['available'],
-      date: (data['date'] as Timestamp).toDate(),
-      patientId: data['patientId'] ?? '',
+      doctorId: data['doctorId'],
+      patientId: data['patientId'],
+      date: date,
+      time: data['time'],
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'id': id,
-      'available': available,
-      'date': Timestamp.fromDate(date),
+      'doctorId': doctorId,
       'patientId': patientId,
+      'date': Timestamp.fromDate(date),
+      'time': time,
     };
   }
 }
