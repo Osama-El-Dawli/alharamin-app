@@ -81,7 +81,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(AuthLoading());
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email!,
+        email: email!.trim(),
         password: password!,
       );
 

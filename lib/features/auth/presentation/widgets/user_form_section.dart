@@ -26,7 +26,7 @@ class UserFormSection extends StatelessWidget {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
-              } else if (!emailRegex.hasMatch(value)) {
+              } else if (!emailRegex.hasMatch(value.trim())) {
                 return 'Please enter a valid email';
               }
               return null;
@@ -40,7 +40,6 @@ class UserFormSection extends StatelessWidget {
               authCubit.password = password;
             },
             controller: authCubit.passwordController,
-            // obscureText: isObsecured,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your password';
