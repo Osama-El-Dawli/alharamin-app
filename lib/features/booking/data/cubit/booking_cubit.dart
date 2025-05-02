@@ -139,9 +139,19 @@ class BookingCubit extends Cubit<BookingState> {
         transaction.set(appointmentRef, appointment.toFirestore());
       });
 
-      await selectDate(selectedDate!);
+      emit(
+        BookingSuccess(
+          appointmentModel: AppointmentModel(
+            id: appointmentRef.id,
+            doctorId: doctor.id,
+            patientId: patientId,
+            date: selectedDate!,
+            time: time,
+          ),
+        ),
+      );
 
-      emit(BookingSuccess());
+      await selectDate(selectedDate!);
 
       if (state is DateSelectedState) {
         final currentState = state as DateSelectedState;

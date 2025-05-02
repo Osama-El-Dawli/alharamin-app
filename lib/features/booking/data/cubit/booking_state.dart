@@ -26,7 +26,14 @@ class DateSelectedState extends BookingState {
   List<Object> get props => [date, availableAppointments, selectedTime ?? ''];
 }
 
-class BookingSuccess extends BookingState {}
+class BookingSuccess extends BookingState {
+  final AppointmentModel appointmentModel;
+
+  const BookingSuccess({required this.appointmentModel});
+
+  @override
+  List<Object> get props => [appointmentModel];
+}
 
 class BookingFailure extends BookingState {
   final String errMessage;

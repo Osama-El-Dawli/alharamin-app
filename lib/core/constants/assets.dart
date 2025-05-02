@@ -14,6 +14,14 @@ class Assets {
   /// assets/images/brain_and_nerves.png
   static const String assetsImagesBrainAndNerves = "assets/images/brain_and_nerves.png";
 
+  /// Assets for assetsImagesCalendarSvg
+  /// assets/images/calendar_svg.svg
+  static const String assetsImagesCalendarSvg = "assets/images/calendar_svg.svg";
+
+  /// Assets for assetsImagesCalender
+  /// assets/images/calender.png
+  static const String assetsImagesCalender = "assets/images/calender.png";
+
   /// Assets for assetsImagesChatbotHomeScreen
   /// assets/images/chatbot_home_screen.png
   static const String assetsImagesChatbotHomeScreen = "assets/images/chatbot_home_screen.png";
