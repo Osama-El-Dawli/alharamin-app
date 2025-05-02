@@ -43,3 +43,13 @@ class BookingFailure extends BookingState {
   @override
   List<Object> get props => [errMessage];
 }
+
+class BookedTimeLoading extends BookingState{}
+
+class BookedTimeFailure extends BookingState{
+  final String errMessage;
+  const BookedTimeFailure({required this.errMessage});
+
+  @override
+  List<Object> get props => [errMessage];
+}

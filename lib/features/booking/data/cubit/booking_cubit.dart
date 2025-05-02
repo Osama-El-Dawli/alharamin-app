@@ -105,7 +105,7 @@ class BookingCubit extends Cubit<BookingState> {
       return;
     }
 
-    emit(BookingLoading());
+    emit(BookedTimeLoading());
 
     try {
       final appointmentRef = _firestore.collection('appointments').doc();
@@ -165,7 +165,7 @@ class BookingCubit extends Cubit<BookingState> {
       }
     } catch (e) {
       emit(
-        BookingFailure(
+        BookedTimeFailure(
           errMessage: 'Failed to book appointment: ${e.toString()}',
         ),
       );

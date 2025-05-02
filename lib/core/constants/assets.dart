@@ -16,7 +16,7 @@ class Assets {
 
   /// Assets for assetsImagesCalendarSvg
   /// assets/images/calendar_svg.svg
-  static const String assetsImagesCalendarSvg = "assets/images/calendar_svg.svg";
+  static const String assetsImagesCalendarSvg = "assets/images/calendar.svg";
 
   /// Assets for assetsImagesCalender
   /// assets/images/calender.png
