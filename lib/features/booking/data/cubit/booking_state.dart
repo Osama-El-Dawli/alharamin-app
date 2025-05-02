@@ -1,36 +1,38 @@
 part of 'booking_cubit.dart';
 
-sealed class BookingState extends Equatable {
+abstract class BookingState extends Equatable {
   const BookingState();
 
   @override
   List<Object> get props => [];
 }
 
-final class BookingInitial extends BookingState {}
+class BookingInitial extends BookingState {}
 
-final class BookingLoading extends BookingState {}
+class BookingLoading extends BookingState {}
 
-final class DateSelectedState extends BookingState {
+class DateSelectedState extends BookingState {
   final DateTime date;
   final List<String> availableAppointments;
+  final String? selectedTime; // Add this
 
   const DateSelectedState({
     required this.date,
     required this.availableAppointments,
+    this.selectedTime,
   });
 
   @override
-  List<Object> get props => [date, availableAppointments];
+  List<Object> get props => [date, availableAppointments, selectedTime ?? ''];
 }
 
-final class BookingSuccess extends BookingState {}
+class BookingSuccess extends BookingState {}
 
-final class BookingError extends BookingState {
-  final String message;
+class BookingFailure extends BookingState {
+  final String errMessage;
 
-  const BookingError({required this.message});
+  const BookingFailure({required this.errMessage});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [errMessage];
 }

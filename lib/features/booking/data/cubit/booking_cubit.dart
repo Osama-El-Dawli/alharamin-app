@@ -1,8 +1,8 @@
 import 'package:alharamin_app/features/booking/data/models/appointment_model.dart';
-import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
 part 'booking_state.dart';
 
@@ -13,6 +13,7 @@ class BookingCubit extends Cubit<BookingState> {
 
   DateTime? selectedDate;
   String? selectedTime;
+  List<String> bookedTimes = [];
 
   BookingCubit({
     required this.doctor,
@@ -21,37 +22,14 @@ class BookingCubit extends Cubit<BookingState> {
   }) : _firestore = firestore ?? FirebaseFirestore.instance,
        super(BookingInitial());
 
-  Future<List<String>> _getBookedTimes(String doctorId, DateTime date) async {
-    final startOfDay = DateTime(date.year, date.month, date.day);
-    final endOfDay = startOfDay.add(const Duration(days: 1));
-
-    try {
-      final snapshot =
-          await _firestore
-              .collection('appointments')
-              .where('doctorId', isEqualTo: doctorId)
-              .where(
-                'date',
-                isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay),
-              )
-              .where('date', isLessThan: Timestamp.fromDate(endOfDay))
-              .where('status', whereIn: ['pending', 'confirmed'])
-              .get();
-
-      return snapshot.docs.map((doc) => doc['time'] as String).toList();
-    } catch (e) {
-      emit(BookingError(message: 'Failed to load booked appointments'));
-      return [];
-    }
-  }
-
   Future<void> selectDate(DateTime date) async {
     emit(BookingLoading());
     selectedDate = date;
     selectedTime = null;
 
     try {
-      final bookedTimes = await _getBookedTimes(doctor.id, date);
+      bookedTimes = await _getBookedTimes(doctor.id, date);
+
       final availableAppointments =
           doctor.appointments
               .where((time) => !bookedTimes.contains(time))
@@ -64,29 +42,123 @@ class BookingCubit extends Cubit<BookingState> {
         ),
       );
     } catch (e) {
-      emit(BookingError(message: 'Failed to load available appointments'));
+      emit(
+        BookingFailure(
+          errMessage: 'Failed to load appointments: ${e.toString()}',
+        ),
+      );
+    }
+  }
+
+  Future<void> selectTime(String time) async {
+    if (selectedDate == null) {
+      emit(BookingFailure(errMessage: 'Please select a date first'));
+      return;
+    }
+
+    selectedTime = time;
+    if (state is DateSelectedState) {
+      final currentState = state as DateSelectedState;
+      emit(
+        DateSelectedState(
+          date: currentState.date,
+          availableAppointments: currentState.availableAppointments,
+          selectedTime: time, // Pass the selected time here
+        ),
+      );
+    }
+  }
+
+  Future<List<String>> _getBookedTimes(String doctorId, DateTime date) async {
+    try {
+      final startOfDay = DateTime(date.year, date.month, date.day);
+      final endOfDay = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        23,
+        59,
+        59,
+        999,
+      );
+
+      final snapshot =
+          await _firestore
+              .collection('appointments')
+              .where('doctorId', isEqualTo: doctorId)
+              .where(
+                'date',
+                isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay),
+              )
+              .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+              .get();
+
+      return snapshot.docs.map((doc) => doc['time'] as String).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch booked times: ${e.toString()}');
     }
   }
 
   Future<void> bookAppointment(String time) async {
-    if (selectedDate == null) return;
+    if (selectedDate == null) {
+      emit(BookingFailure(errMessage: 'Please select a date first'));
+      return;
+    }
+
     emit(BookingLoading());
 
     try {
-      final appointment = AppointmentModel(
-        id: '',
-        doctorId: doctor.id,
-        patientId: patientId,
-        date: selectedDate!,
-        time: time,
+      final appointmentRef = _firestore.collection('appointments').doc();
+      final dateOnly = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
       );
 
-      await _firestore
-          .collection('appointments')
-          .add(appointment.toFirestore());
+      await _firestore.runTransaction((transaction) async {
+        final querySnapshot =
+            await _firestore
+                .collection('appointments')
+                .where('doctorId', isEqualTo: doctor.id)
+                .where('date', isEqualTo: Timestamp.fromDate(dateOnly))
+                .where('time', isEqualTo: time)
+                .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          throw Exception('This time slot has already been booked.');
+        }
+
+        final appointment = AppointmentModel(
+          id: appointmentRef.id,
+          doctorId: doctor.id,
+          patientId: patientId,
+          date: selectedDate!,
+          time: time,
+        );
+
+        transaction.set(appointmentRef, appointment.toFirestore());
+      });
+
+      await selectDate(selectedDate!);
+
       emit(BookingSuccess());
+
+      if (state is DateSelectedState) {
+        final currentState = state as DateSelectedState;
+        emit(
+          DateSelectedState(
+            date: currentState.date,
+            availableAppointments: currentState.availableAppointments,
+            selectedTime: null,
+          ),
+        );
+      }
     } catch (e) {
-      emit(BookingError(message: 'Failed to book appointment'));
+      emit(
+        BookingFailure(
+          errMessage: 'Failed to book appointment: ${e.toString()}',
+        ),
+      );
     }
   }
 }
