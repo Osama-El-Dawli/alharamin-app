@@ -4,6 +4,7 @@ import 'package:alharamin_app/core/routes/extra_params.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
 import 'package:alharamin_app/features/booking/data/cubit/booking_cubit.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
+import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/custom_search_widget.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/doctor_card.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/shimmer_doctor_card.dart';
@@ -13,7 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
-class DoctorScreenBody extends StatelessWidget {
+class DoctorScreenBody extends StatefulWidget {
   final String specialityName;
   final UserModel userModel;
 
@@ -22,6 +23,13 @@ class DoctorScreenBody extends StatelessWidget {
     required this.specialityName,
     required this.userModel,
   });
+
+  @override
+  State<DoctorScreenBody> createState() => _DoctorScreenBodyState();
+}
+
+class _DoctorScreenBodyState extends State<DoctorScreenBody> {
+  bool _isCheckingBooking = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,31 +42,37 @@ class DoctorScreenBody extends StatelessWidget {
         automaticallyImplyLeading: false,
         scrolledUnderElevation: 0,
       ),
-      body: BlocBuilder<DoctorCubit, DoctorState>(
-        builder: (context, state) {
-          if (state is DoctorFailure) {
-            return Center(child: Text(state.errMessage));
-          }
-          return Column(
-            children: [
-              SizedBox(height: 15.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18.w),
-                child: CustomSearchWidget(
-                  onSearch: (query) {
-                    if (query.isNotEmpty) {
-                      BlocProvider.of<DoctorCubit>(
-                        context,
-                      ).fetchDoctorsByName(nameEn: query);
-                    }
-                  },
-                ),
-              ),
-              SizedBox(height: 12.h),
-              Expanded(child: _buildDoctorList(state)),
-            ],
-          );
-        },
+      body: Stack(
+        children: [
+          BlocBuilder<DoctorCubit, DoctorState>(
+            builder: (context, state) {
+              if (state is DoctorFailure) {
+                return Center(child: Text(state.errMessage));
+              }
+              return Column(
+                children: [
+                  SizedBox(height: 15.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.w),
+                    child: CustomSearchWidget(
+                      onSearch: (query) {
+                        if (query.isNotEmpty) {
+                          context.read<DoctorCubit>().fetchDoctorsByName(
+                            nameEn: query,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Expanded(child: _buildDoctorList(state)),
+                ],
+              );
+            },
+          ),
+          if (_isCheckingBooking)
+            const Center(child: CircularProgressIndicator()),
+        ],
       ),
     );
   }
@@ -90,33 +104,7 @@ class DoctorScreenBody extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 8.h),
             child: InkWell(
-              onTap: () async {
-                final cubit = BookingCubit(
-                  doctor: doctor,
-                  patientId: userModel.uid,
-                );
-
-                final alreadyBooked = await cubit.checkIsAlreadyBooked();
-
-                if (alreadyBooked != null) {
-                  context.push(
-                    AppRoutes.bookingDetails,
-                    extra: BookingDetailsParams(
-                      doctorModel: doctor,
-                      appointmentModel: alreadyBooked,
-                      userModel: userModel,
-                    ),
-                  );
-                } else {
-                  context.push(
-                    AppRoutes.booking,
-                    extra: BookingScreenParams(
-                      doctorModel: doctor,
-                      userModel: userModel,
-                    ),
-                  );
-                }
-              },
+              onTap: () => _handleDoctorTap(doctor),
               child: DoctorCard(doctorModel: doctor),
             ),
           );
@@ -126,6 +114,50 @@ class DoctorScreenBody extends StatelessWidget {
       return Center(child: Text(state.errMessage));
     } else {
       return Center(child: Text('Something went wrong'));
+    }
+  }
+
+  Future<void> _handleDoctorTap(DoctorModel doctor) async {
+    if (_isCheckingBooking) return;
+
+    setState(() => _isCheckingBooking = true);
+
+    try {
+      final cubit = BookingCubit(
+        doctor: doctor,
+        patientId: widget.userModel.uid,
+      );
+
+      final alreadyBooked = await cubit.checkIsAlreadyBooked();
+
+      if (!mounted) return;
+
+      if (alreadyBooked != null) {
+        context.push(
+          AppRoutes.bookingDetails,
+          extra: BookingDetailsParams(
+            doctorModel: doctor,
+            appointmentModel: alreadyBooked,
+            userModel: widget.userModel,
+          ),
+        );
+      } else {
+        context.push(
+          AppRoutes.booking,
+          extra: BookingScreenParams(
+            doctorModel: doctor,
+            userModel: widget.userModel,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error checking booking: ${e.toString()}')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isCheckingBooking = false);
     }
   }
 }

@@ -48,7 +48,7 @@ class BookingInfo extends StatelessWidget {
                   width: 34.w,
                   child: SvgPicture.asset(
                     fit: BoxFit.contain,
-                    Assets.assetsImagesCalendarSvg,
+                    Assets.assetsImagesCalendar,
                   ),
                 ),
               ),

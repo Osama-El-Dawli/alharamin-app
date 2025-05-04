@@ -54,7 +54,17 @@ class BookedTimeFailure extends BookingState {
   List<Object> get props => [errMessage];
 }
 
-class AppointmentCanceled extends BookingState {}
+class AppointmentCanceledSuccess extends BookingState {}
+
+class AppointmentCanceledLoading extends BookingState {}
+
+class AppointmentCanceledFailure extends BookingState {
+  final String errMessage;
+  const AppointmentCanceledFailure({required this.errMessage});
+
+  @override
+  List<Object> get props => [errMessage];
+}
 
 class AlreadyBooked extends BookingState {
   final AppointmentModel appointmentModel;

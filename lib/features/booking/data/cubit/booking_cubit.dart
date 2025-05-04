@@ -203,18 +203,25 @@ class BookingCubit extends Cubit<BookingState> {
   }
 
   Future<void> cancelAppointment({required String appointmentId}) async {
-    emit(BookedTimeLoading());
+    if (isClosed) return;
+    emit(AppointmentCanceledLoading());
     try {
       await _firestore.collection('appointments').doc(appointmentId).delete();
+      if (isClosed) return;
       emit(NotBooked());
-      if (selectedDate != null) selectDate(selectedDate!);
-      emit(AppointmentCanceled());
+      if (!isClosed && selectedDate != null) selectDate(selectedDate!);
+
+      if (!isClosed) {
+        emit(AppointmentCanceledSuccess());
+      }
     } catch (e) {
-      emit(
-        BookedTimeFailure(
-          errMessage: 'Failed to cancel appointment: ${e.toString()}',
-        ),
-      );
+      if (!isClosed) {
+        emit(
+          AppointmentCanceledFailure(
+            errMessage: 'Failed to cancel appointment: ${e.toString()}',
+          ),
+        );
+      }
     }
   }
 }

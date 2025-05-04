@@ -28,9 +28,22 @@ class BookingDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<BookingCubit, BookingState>(
       listener: (context, state) {
-        if (state is AppointmentCanceled) {
+        if (state is AppointmentCanceledLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder:
+                (context) => const Center(
+                  child: CircularProgressIndicator(color: Colors.red),
+                ),
+          );
+        } else if (state is AppointmentCanceledSuccess) {
+          Navigator.pop(context);
           flutterToast('Appointment Canceled');
           context.go(AppRoutes.userHome, extra: userModel);
+        } else if (state is AppointmentCanceledFailure) {
+          Navigator.pop(context);
+          flutterToast(state.errMessage);
         }
       },
       child: Scaffold(
