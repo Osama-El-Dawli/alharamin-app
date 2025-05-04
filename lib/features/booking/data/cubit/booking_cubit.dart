@@ -105,7 +105,7 @@ class BookingCubit extends Cubit<BookingState> {
       return;
     }
 
-    emit(BookingLoading());
+    emit(BookedTimeLoading());
 
     try {
       final appointmentRef = _firestore.collection('appointments').doc();
@@ -139,9 +139,19 @@ class BookingCubit extends Cubit<BookingState> {
         transaction.set(appointmentRef, appointment.toFirestore());
       });
 
-      await selectDate(selectedDate!);
+      emit(
+        BookingSuccess(
+          appointmentModel: AppointmentModel(
+            id: appointmentRef.id,
+            doctorId: doctor.id,
+            patientId: patientId,
+            date: selectedDate!,
+            time: time,
+          ),
+        ),
+      );
 
-      emit(BookingSuccess());
+      await selectDate(selectedDate!);
 
       if (state is DateSelectedState) {
         final currentState = state as DateSelectedState;
@@ -155,7 +165,7 @@ class BookingCubit extends Cubit<BookingState> {
       }
     } catch (e) {
       emit(
-        BookingFailure(
+        BookedTimeFailure(
           errMessage: 'Failed to book appointment: ${e.toString()}',
         ),
       );

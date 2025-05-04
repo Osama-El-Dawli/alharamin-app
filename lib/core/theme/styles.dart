@@ -110,4 +110,10 @@ abstract class Styles {
     fontWeight: FontWeight.w500,
     color: AppColors.lightGrey,
   );
+
+  static final TextStyle font20W500Black = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
 }

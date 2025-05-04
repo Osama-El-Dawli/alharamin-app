@@ -17,12 +17,12 @@ class AppointmentsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
+    if (isLoading && appointments.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (appointments.isEmpty) {
-      return const Center(child: Text('No available time slots for this date'));
+      return const Center(child: Text('No available appointments'));
     }
 
     return GridView.builder(
