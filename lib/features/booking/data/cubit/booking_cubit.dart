@@ -22,6 +22,36 @@ class BookingCubit extends Cubit<BookingState> {
   }) : _firestore = firestore ?? FirebaseFirestore.instance,
        super(BookingInitial());
 
+  Future<AppointmentModel?> checkIsAlreadyBooked() async {
+    emit(BookedTimeLoading());
+    try {
+      final query =
+          await _firestore
+              .collection('appointments')
+              .where('doctorId', isEqualTo: doctor.id)
+              .where('patientId', isEqualTo: patientId)
+              .limit(1)
+              .get();
+
+      if (query.docs.isNotEmpty) {
+        final doc = query.docs.first;
+        emit(
+          AlreadyBooked(appointmentModel: AppointmentModel.fromFirestore(doc)),
+        );
+        return AppointmentModel.fromFirestore(doc);
+      } else {
+        emit(NotBooked());
+      }
+    } catch (e) {
+      emit(
+        BookedTimeFailure(
+          errMessage: 'Failed to check booking status: ${e.toString()}',
+        ),
+      );
+    }
+    return null;
+  }
+
   Future<void> selectDate(DateTime date) async {
     emit(BookingLoading());
     selectedDate = date;
@@ -167,6 +197,22 @@ class BookingCubit extends Cubit<BookingState> {
       emit(
         BookedTimeFailure(
           errMessage: 'Failed to book appointment: ${e.toString()}',
+        ),
+      );
+    }
+  }
+
+  Future<void> cancelAppointment({required String appointmentId}) async {
+    emit(BookedTimeLoading());
+    try {
+      await _firestore.collection('appointments').doc(appointmentId).delete();
+      emit(NotBooked());
+      if (selectedDate != null) selectDate(selectedDate!);
+      emit(AppointmentCanceled());
+    } catch (e) {
+      emit(
+        BookedTimeFailure(
+          errMessage: 'Failed to cancel appointment: ${e.toString()}',
         ),
       );
     }

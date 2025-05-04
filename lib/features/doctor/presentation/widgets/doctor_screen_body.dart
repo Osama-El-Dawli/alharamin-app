@@ -2,6 +2,7 @@ import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/routes/extra_params.dart';
 import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/booking/data/cubit/booking_cubit.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/custom_search_widget.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/doctor_card.dart';
@@ -89,14 +90,32 @@ class DoctorScreenBody extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 8.h),
             child: InkWell(
-              onTap: () {
-                context.push(
-                  AppRoutes.booking,
-                  extra: BookingScreenParams(
-                    doctorModel: doctor,
-                    userModel: userModel,
-                  ),
+              onTap: () async {
+                final cubit = BookingCubit(
+                  doctor: doctor,
+                  patientId: userModel.uid,
                 );
+
+                final alreadyBooked = await cubit.checkIsAlreadyBooked();
+
+                if (alreadyBooked != null) {
+                  context.push(
+                    AppRoutes.bookingDetails,
+                    extra: BookingDetailsParams(
+                      doctorModel: doctor,
+                      appointmentModel: alreadyBooked,
+                      userModel: userModel,
+                    ),
+                  );
+                } else {
+                  context.push(
+                    AppRoutes.booking,
+                    extra: BookingScreenParams(
+                      doctorModel: doctor,
+                      userModel: userModel,
+                    ),
+                  );
+                }
               },
               child: DoctorCard(doctorModel: doctor),
             ),

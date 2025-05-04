@@ -32,11 +32,12 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: AppRoutes.authGate,
-      builder:
-          (context, state) => BlocProvider(
-            create: (context) => getIt.get<AuthCubit>(),
-            child: const AuthGate(),
-          ),
+      builder: (context, state) {
+        return BlocProvider(
+          create: (context) => getIt.get<AuthCubit>(),
+          child: AuthGate(),
+        );
+      },
     ),
     GoRoute(
       path: AppRoutes.onBoarding,
@@ -92,8 +93,8 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.userHome,
       builder: (context, state) {
-        final user = state.extra as UserModel;
-        return UserHomeScreen(user: user);
+        final userModel = state.extra as UserModel;
+        return UserHomeScreen(user: userModel);
       },
     ),
 
@@ -107,6 +108,7 @@ final router = GoRouter(
                   DoctorCubit()..fetchDoctorsBySpeciality(
                     speciality: doctorScreeenParams.specialityName,
                   ),
+
           child: DoctorScreen(
             specialityName: doctorScreeenParams.specialityName,
             userModel: doctorScreeenParams.userModel,
@@ -137,9 +139,17 @@ final router = GoRouter(
       path: AppRoutes.bookingDetails,
       builder: (context, state) {
         final bookingDetailsParams = state.extra as BookingDetailsParams;
-        return BookingDetailsScreen(
-          doctorModel: bookingDetailsParams.doctorModel,
-          appointmentModel: bookingDetailsParams.appointmentModel,
+        return BlocProvider(
+          create:
+              (context) => BookingCubit(
+                doctor: bookingDetailsParams.doctorModel,
+                patientId: bookingDetailsParams.userModel.uid,
+              ),
+          child: BookingDetailsScreen(
+            doctorModel: bookingDetailsParams.doctorModel,
+            appointmentModel: bookingDetailsParams.appointmentModel,
+            userModel: bookingDetailsParams.userModel,
+          ),
         );
       },
     ),

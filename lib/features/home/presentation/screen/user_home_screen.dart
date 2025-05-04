@@ -8,6 +8,6 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  UserHomeScreenBody(user: user);
+    return  UserHomeScreenBody(user: user,);
   }
 }
