@@ -1,3 +1,4 @@
+import 'package:alharamin_app/features/auth/models/user_model.dart';
 import 'package:alharamin_app/features/booking/data/models/appointment_model.dart';
 import 'package:alharamin_app/features/booking/presentation/widgets/booking_details_body.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
@@ -8,13 +9,16 @@ class BookingDetailsScreen extends StatelessWidget {
     super.key,
     required this.doctorModel,
     required this.appointmentModel,
+    required this.userModel,
   });
   final DoctorModel doctorModel;
   final AppointmentModel appointmentModel;
+  final UserModel userModel;
 
   @override
   Widget build(BuildContext context) {
     return BookingDetailsBody(
+      userModel: userModel,
       doctorModel: doctorModel,
       appointmentModel: appointmentModel,
     );

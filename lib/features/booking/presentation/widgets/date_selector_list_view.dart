@@ -31,7 +31,7 @@ class _DateSelectorListViewState extends State<DateSelectorListView> {
   }
 
   List<DateTime> _getNext7Days() {
-    final now = DateTime.now();
+    final now = DateTime.now().add(const Duration(days: 1));
     return List.generate(
       14,
       (i) => now.add(Duration(days: i)),

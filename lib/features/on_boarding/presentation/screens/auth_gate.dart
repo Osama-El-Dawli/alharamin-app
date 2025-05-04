@@ -15,7 +15,7 @@ class AuthGate extends StatelessWidget {
         if (state is AuthInitial && state.isCheckingAutoLogin) {
           return const Scaffold(body: LoadingOverlay());
         } else if (state is AuthSuccess) {
-          return UserHomeScreen(user: state.user);
+          return UserHomeScreen(user: state.user,);
         } else {
           return const UserLoginScreen();
         }

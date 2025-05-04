@@ -10,7 +10,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class UserHomeScreenBody extends StatelessWidget {
-  const UserHomeScreenBody({super.key, required this.user});
+  const UserHomeScreenBody({
+    super.key,
+    required this.user,
+  });
   final UserModel user;
 
   @override

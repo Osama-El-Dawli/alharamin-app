@@ -13,12 +13,20 @@ class DoctorScreeenParams {
   final String specialityName;
   final UserModel userModel;
 
-  DoctorScreeenParams({required this.specialityName, required this.userModel});
+  DoctorScreeenParams({
+    required this.specialityName,
+    required this.userModel,
+  });
 }
 
 class BookingDetailsParams {
   final DoctorModel doctorModel;
   final AppointmentModel appointmentModel;
+  final UserModel userModel;
 
-  BookingDetailsParams({required this.doctorModel, required this.appointmentModel});
+  BookingDetailsParams({
+    required this.doctorModel,
+    required this.userModel,
+    required this.appointmentModel,
+  });
 }
