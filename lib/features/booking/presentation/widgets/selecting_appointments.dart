@@ -6,7 +6,7 @@ import 'appointments_grid_view.dart';
 import 'date_selector_list_view.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 
-class SelectingAppointments extends StatelessWidget {
+class SelectingAppointments extends StatefulWidget {
   final DoctorModel doctorModel;
   final Function(DateTime) onDateSelected;
   final Function(String) onTimeSelected;
@@ -19,50 +19,73 @@ class SelectingAppointments extends StatelessWidget {
   });
 
   @override
+  State<SelectingAppointments> createState() => _SelectingAppointmentsState();
+}
+
+class _SelectingAppointmentsState extends State<SelectingAppointments> {
+  List<String> _availableAppointments = [];
+  DateTime? _selectedDate;
+  String? _selectedTime;
+  bool _isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookingCubit, BookingState>(
-      builder: (context, state) {
-        List<String> availableAppointments = [];
-        DateTime? selectedDate;
-        String? selectedTime;
-
+    return BlocListener<BookingCubit, BookingState>(
+      listener: (context, state) {
         if (state is DateSelectedState) {
-          availableAppointments = state.availableAppointments;
-          selectedDate = state.date;
-          selectedTime = state.selectedTime;
+          setState(() {
+            _availableAppointments = state.availableAppointments;
+            _selectedDate = state.date;
+            _selectedTime = state.selectedTime;
+            _isLoading = false;
+          });
+        } else if (state is BookingLoading) {
+          setState(() {
+            _isLoading = true;
+          });
+        } else if (state is BookingSuccess ||
+            state is BookingOperationFailure ||
+            state is BookingFailure) {
+          setState(() {
+            _isLoading = false;
+          });
         }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'Select Date',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 8),
+          DateSelectorListView(onDateSelected: widget.onDateSelected),
+          const SizedBox(height: 16),
+          if (_selectedDate != null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Select Date',
+                'Available Times on ${DateFormat.yMMMd().format(_selectedDate!)}',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 8),
-            DateSelectorListView(onDateSelected: onDateSelected),
-            const SizedBox(height: 16),
-            if (selectedDate != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  'Available Times on ${DateFormat.yMMMd().format(selectedDate)}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            const SizedBox(height: 8),
-            AppointmentsGridView(
-              appointments: availableAppointments,
-              selectedTime: selectedTime,
-              onTimeSelected: onTimeSelected,
-              isLoading: state is BookingLoading,
-            ),
-          ],
-        );
-      },
+          const SizedBox(height: 8),
+          AppointmentsGridView(
+            appointments: _availableAppointments,
+            selectedTime: _selectedTime,
+            onTimeSelected: (time) {
+              widget.onTimeSelected(time);
+              setState(() {
+                _selectedTime = time;
+              });
+            },
+            isLoading: _isLoading,
+          ),
+        ],
+      ),
     );
   }
 }

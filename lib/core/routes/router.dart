@@ -1,15 +1,17 @@
 import 'dart:io';
 
-import 'package:alharamin_app/core/helpers/service_loactor.dart';
+import 'package:alharamin_app/core/helpers/service_locator.dart';
 import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/routes/extra_params.dart';
 import 'package:alharamin_app/features/admin/cubits/admin_login_cubit/admin_login_cubit.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_home_screen.dart';
-import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
-import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/auth/data/cubit/auth_cubit.dart';
+import 'package:alharamin_app/features/auth/data/models/user_model.dart';
 import 'package:alharamin_app/features/booking/data/cubit/booking_cubit.dart';
+import 'package:alharamin_app/features/booking/data/repositories/booking_repository.dart';
 import 'package:alharamin_app/features/booking/presentation/screens/booking_details_screen.dart';
 import 'package:alharamin_app/features/booking/presentation/screens/booking_screen.dart';
+import 'package:alharamin_app/features/chatbot/data/cubit/chatbot_cubit.dart';
 import 'package:alharamin_app/features/chatbot/presentation/screens/chat_bot_screen.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
 import 'package:alharamin_app/features/doctor/presentation/screens/doctor_screen.dart';
@@ -25,7 +27,7 @@ import 'package:go_router/go_router.dart';
 
 bool isMobile() => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 bool isDesktop() =>
-    !kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux);
+    (kIsWeb || Platform.isWindows || Platform.isMacOS || Platform.isLinux);
 
 final router = GoRouter(
   initialLocation: AppRoutes.onBoarding,
@@ -47,10 +49,8 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.login,
       redirect: (context, state) {
-        if (kIsWeb) {
-          return AppRoutes.adminLogin;
-        } else if (isMobile()) {
-          return AppRoutes.userLogin;
+        if (isMobile()) {
+          return AppRoutes.authGate;
         } else if (isDesktop()) {
           return AppRoutes.adminLogin;
         }
@@ -69,14 +69,18 @@ final router = GoRouter(
 
     GoRoute(
       path: AppRoutes.adminLogin,
-      builder: (context, state) => const AdminLoginScreen(),
+      builder:
+          (context, state) => BlocProvider(
+            create: (context) => AdminLoginCubit(),
+            child: const AdminLoginScreen(),
+          ),
     ),
 
     GoRoute(
       path: AppRoutes.register,
       builder:
           (context, state) => BlocProvider(
-            create: (context) => AuthCubit(),
+            create: (context) => getIt.get<AuthCubit>(),
             child: const RegisterScreen(),
           ),
     ),
@@ -120,16 +124,17 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.booking,
       builder: (context, state) {
-        final bookingScreenParams = state.extra as BookingScreenParams;
+        final extra = state.extra as BookingScreenParams;
         return BlocProvider(
           create:
               (context) => BookingCubit(
-                doctor: bookingScreenParams.doctorModel,
-                patientId: bookingScreenParams.userModel.uid,
+                doctor: extra.doctorModel,
+                patientId: extra.userModel.uid,
+                bookingRepository: getIt<IBookingRepository>(),
               ),
           child: BookingScreen(
-            doctorModel: bookingScreenParams.doctorModel,
-            userModel: bookingScreenParams.userModel,
+            doctorModel: extra.doctorModel,
+            userModel: extra.userModel,
           ),
         );
       },
@@ -138,25 +143,28 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.bookingDetails,
       builder: (context, state) {
-        final bookingDetailsParams = state.extra as BookingDetailsParams;
+        final extra = state.extra as BookingDetailsParams;
         return BlocProvider(
           create:
               (context) => BookingCubit(
-                doctor: bookingDetailsParams.doctorModel,
-                patientId: bookingDetailsParams.userModel.uid,
+                doctor: extra.doctorModel,
+                patientId: extra.userModel.uid,
+                bookingRepository: getIt<IBookingRepository>(),
               ),
           child: BookingDetailsScreen(
-            doctorModel: bookingDetailsParams.doctorModel,
-            appointmentModel: bookingDetailsParams.appointmentModel,
-            userModel: bookingDetailsParams.userModel,
+            doctorModel: extra.doctorModel,
+            appointmentModel: extra.appointmentModel,
+            userModel: extra.userModel,
           ),
         );
       },
     ),
-
     GoRoute(
       path: AppRoutes.chatBot,
-      builder: (context, state) => ChatBotScreen(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => ChatbotCubit(),
+        child: const ChatBotScreen(),
+      ),
     ),
   ],
 );

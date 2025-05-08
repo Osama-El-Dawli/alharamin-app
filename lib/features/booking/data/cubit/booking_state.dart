@@ -14,7 +14,7 @@ class BookingLoading extends BookingState {}
 class DateSelectedState extends BookingState {
   final DateTime date;
   final List<String> availableAppointments;
-  final String? selectedTime; // Add this
+  final String? selectedTime;
 
   const DateSelectedState({
     required this.date,
@@ -44,11 +44,11 @@ class BookingFailure extends BookingState {
   List<Object> get props => [errMessage];
 }
 
-class BookedTimeLoading extends BookingState {}
+class BookingOperationLoading extends BookingState {}
 
-class BookedTimeFailure extends BookingState {
+class BookingOperationFailure extends BookingState {
   final String errMessage;
-  const BookedTimeFailure({required this.errMessage});
+  const BookingOperationFailure({required this.errMessage});
 
   @override
   List<Object> get props => [errMessage];

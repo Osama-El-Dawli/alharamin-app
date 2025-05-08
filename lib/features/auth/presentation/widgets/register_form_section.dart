@@ -2,7 +2,7 @@ import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
 import 'package:alharamin_app/core/widgets/custom_button.dart';
 import 'package:alharamin_app/core/widgets/custom_text_field.dart';
-import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
+import 'package:alharamin_app/features/auth/data/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -122,7 +122,6 @@ class RegisterFormSection extends StatelessWidget {
                 ],
               ),
             ),
-            prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
             keyboardType: TextInputType.phone,
           ),
           SizedBox(height: 20.h),

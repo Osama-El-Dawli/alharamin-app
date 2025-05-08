@@ -1,4 +1,4 @@
-import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/auth/data/models/user_model.dart';
 import 'package:alharamin_app/features/booking/data/models/appointment_model.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 

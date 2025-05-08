@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  dartz:
+    dependency: "direct main"
+    description:
+      name: dartz
+      sha256: e6acf34ad2e31b1eb00948692468c30ab48ac8250e0f0df661e29f12dd252168
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.1"
   equatable:
     dependency: "direct main"
     description:
@@ -222,6 +230,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -259,6 +275,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_typing_indicator:
+    dependency: "direct main"
+    description:
+      name: flutter_typing_indicator
+      sha256: a6f5582c8ebf74ceb9031068e962b6d45989f6367edfee125a09c80640fa2634
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -296,6 +320,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.8.1"
+  google_generative_ai:
+    dependency: "direct main"
+    description:
+      name: google_generative_ai
+      sha256: "71f613d0247968992ad87a0eb21650a566869757442ba55a31a81be6746e0d1f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.7"
   html:
     dependency: transitive
     description:

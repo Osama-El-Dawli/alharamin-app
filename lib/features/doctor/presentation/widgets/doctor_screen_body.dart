@@ -1,8 +1,11 @@
-import 'package:alharamin_app/core/constants/assets.dart';
+import 'package:alharamin_app/core/functions/flutter_toast.dart';
+import 'package:alharamin_app/core/helpers/service_locator.dart';
 import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/routes/extra_params.dart';
-import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/core/theme/app_colors.dart';
+import 'package:alharamin_app/features/auth/data/models/user_model.dart';
 import 'package:alharamin_app/features/booking/data/cubit/booking_cubit.dart';
+import 'package:alharamin_app/features/booking/data/repositories/booking_repository.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/custom_search_widget.dart';
@@ -33,47 +36,39 @@ class _DoctorScreenBodyState extends State<DoctorScreenBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        toolbarHeight: 100.h,
-        title: Image.asset(Assets.assetsImagesLogo),
-        automaticallyImplyLeading: false,
-        scrolledUnderElevation: 0,
-      ),
-      body: Stack(
-        children: [
-          BlocBuilder<DoctorCubit, DoctorState>(
-            builder: (context, state) {
-              if (state is DoctorFailure) {
-                return Center(child: Text(state.errMessage));
-              }
-              return Column(
-                children: [
-                  SizedBox(height: 15.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 18.w),
-                    child: CustomSearchWidget(
-                      onSearch: (query) {
-                        if (query.isNotEmpty) {
-                          context.read<DoctorCubit>().fetchDoctorsByName(
-                            nameEn: query,
-                          );
-                        }
-                      },
-                    ),
+    return Stack(
+      children: [
+        BlocBuilder<DoctorCubit, DoctorState>(
+          builder: (context, state) {
+            if (state is DoctorFailure) {
+              return Center(child: Text(state.errMessage));
+            }
+            return Column(
+              children: [
+                SizedBox(height: 15.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.w),
+                  child: CustomSearchWidget(
+                    onSearch: (query) {
+                      if (query.isNotEmpty) {
+                        context.read<DoctorCubit>().fetchDoctorsByName(
+                          nameEn: query,
+                        );
+                      }
+                    },
                   ),
-                  SizedBox(height: 12.h),
-                  Expanded(child: _buildDoctorList(state)),
-                ],
-              );
-            },
+                ),
+                SizedBox(height: 12.h),
+                Expanded(child: _buildDoctorList(state)),
+              ],
+            );
+          },
+        ),
+        if (_isCheckingBooking)
+          const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
           ),
-          if (_isCheckingBooking)
-            const Center(child: CircularProgressIndicator()),
-        ],
-      ),
+      ],
     );
   }
 
@@ -126,36 +121,40 @@ class _DoctorScreenBodyState extends State<DoctorScreenBody> {
       final cubit = BookingCubit(
         doctor: doctor,
         patientId: widget.userModel.uid,
+        bookingRepository: getIt<IBookingRepository>(),
       );
 
-      final alreadyBooked = await cubit.checkIsAlreadyBooked();
+      final checkResult = await cubit.checkIsAlreadyBooked();
 
       if (!mounted) return;
 
-      if (alreadyBooked != null) {
-        context.push(
-          AppRoutes.bookingDetails,
-          extra: BookingDetailsParams(
-            doctorModel: doctor,
-            appointmentModel: alreadyBooked,
-            userModel: widget.userModel,
-          ),
-        );
-      } else {
-        context.push(
-          AppRoutes.booking,
-          extra: BookingScreenParams(
-            doctorModel: doctor,
-            userModel: widget.userModel,
-          ),
-        );
-      }
+      checkResult.fold(
+        (failure) {
+          flutterToast('Error checking booking: ${failure.message}');
+        },
+        (existingAppointment) {
+          if (existingAppointment != null) {
+            context.push(
+              AppRoutes.bookingDetails,
+              extra: BookingDetailsParams(
+                doctorModel: doctor,
+                appointmentModel: existingAppointment,
+                userModel: widget.userModel,
+              ),
+            );
+          } else {
+            context.push(
+              AppRoutes.booking,
+              extra: BookingScreenParams(
+                doctorModel: doctor,
+                userModel: widget.userModel,
+              ),
+            );
+          }
+        },
+      );
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error checking booking: ${e.toString()}')),
-        );
-      }
+      flutterToast('Error checking booking: ${e.toString()}');
     } finally {
       if (mounted) setState(() => _isCheckingBooking = false);
     }

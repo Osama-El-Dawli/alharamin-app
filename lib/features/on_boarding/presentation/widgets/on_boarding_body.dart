@@ -21,7 +21,7 @@ class OnBoardingBody extends StatelessWidget {
           SizedBox(height: 25.h),
           TextAndButton(
             onPressed: () {
-              context.go(AppRoutes.authGate);
+              context.go(AppRoutes.login);
             },
           ),
         ],

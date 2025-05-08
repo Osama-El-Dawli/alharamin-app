@@ -1,4 +1,4 @@
-import 'package:alharamin_app/features/auth/models/user_model.dart';
+import 'package:alharamin_app/features/auth/data/models/user_model.dart';
 import 'package:alharamin_app/features/home/presentation/widgets/user_home_screen_body.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +8,6 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  UserHomeScreenBody(user: user,);
+    return SafeArea(child: Scaffold(body: UserHomeScreenBody(user: user)));
   }
 }

@@ -1,13 +1,15 @@
-import 'package:alharamin_app/core/helpers/service_loactor.dart';
+import 'package:alharamin_app/core/helpers/service_locator.dart';
 import 'package:alharamin_app/core/routes/router.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupServiceLocator();
   runApp(AlharaminApp());
