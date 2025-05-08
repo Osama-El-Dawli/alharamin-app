@@ -3,7 +3,7 @@ import 'package:alharamin_app/core/widgets/have_account.dart';
 import 'package:alharamin_app/core/widgets/loading_overlay.dart';
 import 'package:alharamin_app/core/widgets/registeration_header_section.dart';
 import 'package:alharamin_app/core/widgets/terms_and_conditions.dart';
-import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
+import 'package:alharamin_app/features/auth/data/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/presentation/widgets/register_form_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,7 @@ class RegisterScreenBody extends StatelessWidget {
           flutterToast('Registration successful');
           context.pop();
         } else if (state is AuthFailure) {
-          flutterToast(state.errMessage);
+          flutterToast(state.message);
         }
       },
       builder: (context, state) {

@@ -14,13 +14,9 @@ class Assets {
   /// assets/images/brain_and_nerves.png
   static const String assetsImagesBrainAndNerves = "assets/images/brain_and_nerves.png";
 
-  /// Assets for assetsImagesCalendarSvg
-  /// assets/images/calendar_svg.svg
-  static const String assetsImagesCalendarSvg = "assets/images/calendar.svg";
-
-  /// Assets for assetsImagesCalender
-  /// assets/images/calender.png
-  static const String assetsImagesCalender = "assets/images/calender.png";
+  /// Assets for assetsImagesCalendar
+  /// assets/images/calendar.svg
+  static const String assetsImagesCalendar = "assets/images/calendar.svg";
 
   /// Assets for assetsImagesChatbotHomeScreen
   /// assets/images/chatbot_home_screen.png
@@ -33,6 +29,10 @@ class Assets {
   /// Assets for assetsImagesDoctor
   /// assets/images/doctor.png
   static const String assetsImagesDoctor = "assets/images/doctor.png";
+
+  /// Assets for assetsImagesDoctorAvatar
+  /// assets/images/doctor_avatar.jpg
+  static const String assetsImagesDoctorAvatar = "assets/images/doctor_avatar.jpg";
 
   /// Assets for assetsImagesEarNoseThroat
   /// assets/images/ear_nose_throat.png

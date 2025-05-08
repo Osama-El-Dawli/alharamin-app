@@ -1,4 +1,5 @@
 import 'package:alharamin_app/core/constants/app_strings.dart';
+import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/functions/capitalize.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
@@ -28,8 +29,8 @@ class DoctorCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 color: Colors.white,
               ),
-              child: Image.network(
-                doctorModel.image,
+              child: Image.asset(
+                Assets.assetsImagesDoctorAvatar,
                 errorBuilder:
                     (context, error, stackTrace) => Center(
                       child: Icon(

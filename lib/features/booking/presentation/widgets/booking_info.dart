@@ -1,10 +1,12 @@
 import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
+import 'package:alharamin_app/features/booking/data/cubit/booking_cubit.dart';
 import 'package:alharamin_app/features/booking/data/models/appointment_model.dart';
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 import 'package:alharamin_app/features/doctor/presentation/widgets/doctor_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -48,7 +50,7 @@ class BookingInfo extends StatelessWidget {
                   width: 34.w,
                   child: SvgPicture.asset(
                     fit: BoxFit.contain,
-                    Assets.assetsImagesCalendarSvg,
+                    Assets.assetsImagesCalendar,
                   ),
                 ),
               ),
@@ -69,6 +71,18 @@ class BookingInfo extends StatelessWidget {
                 ),
                 Text(appointmentModel.time, style: Styles.font12W400Grey),
               ],
+            ),
+            const Spacer(),
+            TextButton(
+              onPressed: () {
+                context.read<BookingCubit>().cancelAppointment(
+                  appointmentId: appointmentModel.id,
+                );
+              },
+              child: Text(
+                'Cancel',
+                style: Styles.font14W500Primary.copyWith(color: Colors.red),
+              ),
             ),
           ],
         ),

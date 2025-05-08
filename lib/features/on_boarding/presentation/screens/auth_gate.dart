@@ -1,5 +1,5 @@
 import 'package:alharamin_app/core/widgets/loading_overlay.dart';
-import 'package:alharamin_app/features/auth/cubit/auth_cubit.dart';
+import 'package:alharamin_app/features/auth/data/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/presentation/screens/user_login_screen.dart';
 import 'package:alharamin_app/features/home/presentation/screen/user_home_screen.dart';
 import 'package:flutter/material.dart';

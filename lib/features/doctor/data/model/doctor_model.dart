@@ -4,7 +4,6 @@ class DoctorModel {
   final String id;
   final String nameEn;
   final String nameAr;
-  final String image;
   final String speciality;
   final List<String> appointments;
 
@@ -12,7 +11,6 @@ class DoctorModel {
     required this.id,
     required this.nameEn,
     required this.nameAr,
-    required this.image,
     required this.speciality,
     required this.appointments,
   });
@@ -26,7 +24,6 @@ class DoctorModel {
       id: doc.id,
       nameAr: data['nameAr'],
       nameEn: data['nameEn'],
-      image: data['image'],
       speciality: data['speciality'],
       appointments: appointments,
     );
@@ -36,7 +33,6 @@ class DoctorModel {
     return {
       'nameEn': nameEn,
       'nameAr': nameAr,
-      'image': image,
       'speciality': speciality,
       'appointments': appointments,
     };

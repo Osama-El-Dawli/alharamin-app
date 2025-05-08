@@ -1,7 +1,9 @@
+import 'package:alharamin_app/core/error/failure.dart';
 import 'package:alharamin_app/features/booking/data/models/appointment_model.dart';
+import 'package:alharamin_app/features/booking/data/repositories/booking_repository.dart'; // Import repository
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 part 'booking_state.dart';
@@ -9,7 +11,7 @@ part 'booking_state.dart';
 class BookingCubit extends Cubit<BookingState> {
   final DoctorModel doctor;
   final String patientId;
-  final FirebaseFirestore _firestore;
+  final IBookingRepository _bookingRepository;
 
   DateTime? selectedDate;
   String? selectedTime;
@@ -18,66 +20,70 @@ class BookingCubit extends Cubit<BookingState> {
   BookingCubit({
     required this.doctor,
     required this.patientId,
-    FirebaseFirestore? firestore,
-  }) : _firestore = firestore ?? FirebaseFirestore.instance,
+    required IBookingRepository bookingRepository,
+  }) : _bookingRepository = bookingRepository,
        super(BookingInitial());
 
-  Future<AppointmentModel?> checkIsAlreadyBooked() async {
-    emit(BookedTimeLoading());
-    try {
-      final query =
-          await _firestore
-              .collection('appointments')
-              .where('doctorId', isEqualTo: doctor.id)
-              .where('patientId', isEqualTo: patientId)
-              .limit(1)
-              .get();
-
-      if (query.docs.isNotEmpty) {
-        final doc = query.docs.first;
-        emit(
-          AlreadyBooked(appointmentModel: AppointmentModel.fromFirestore(doc)),
-        );
-        return AppointmentModel.fromFirestore(doc);
-      } else {
-        emit(NotBooked());
-      }
-    } catch (e) {
-      emit(
-        BookedTimeFailure(
-          errMessage: 'Failed to check booking status: ${e.toString()}',
-        ),
-      );
+  Future<Either<Failure, AppointmentModel?>> checkIsAlreadyBooked() async {
+    if (isClosed) {
+      return Left(AuthFailure(message: 'Cubit closed before check completed'));
     }
-    return null;
+    emit(BookingLoading());
+    final result = await _bookingRepository.checkExistingBooking(
+      doctorId: doctor.id,
+      patientId: patientId,
+    );
+
+    result.fold(
+      (failure) {
+        emit(BookingOperationFailure(errMessage: failure.message));
+      },
+      (existingAppointment) {
+        if (isClosed) return;
+        if (existingAppointment != null) {
+          emit(BookingSuccess(appointmentModel: existingAppointment));
+        } else {
+          emit(BookingInitial());
+        }
+      },
+    );
+    return result;
   }
 
   Future<void> selectDate(DateTime date) async {
+    if (isClosed) return;
     emit(BookingLoading());
     selectedDate = date;
     selectedTime = null;
 
-    try {
-      bookedTimes = await _getBookedTimes(doctor.id, date);
+    final result = await _bookingRepository.getBookedTimes(
+      doctorId: doctor.id,
+      date: date,
+    );
 
-      final availableAppointments =
-          doctor.appointments
-              .where((time) => !bookedTimes.contains(time))
-              .toList();
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+        emit(BookingOperationFailure(errMessage: failure.message));
+      },
+      (bookedTimesList) {
+        if (isClosed) return;
+        bookedTimes = bookedTimesList;
+        final allDoctorTimes = doctor.appointments;
+        final availableAppointments =
+            allDoctorTimes
+                .where((timeSlot) => !bookedTimes.contains(timeSlot))
+                .toList();
 
-      emit(
-        DateSelectedState(
-          date: date,
-          availableAppointments: availableAppointments,
-        ),
-      );
-    } catch (e) {
-      emit(
-        BookingFailure(
-          errMessage: 'Failed to load appointments: ${e.toString()}',
-        ),
-      );
-    }
+        emit(
+          DateSelectedState(
+            date: date,
+            availableAppointments: availableAppointments,
+            selectedTime: null,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> selectTime(String time) async {
@@ -93,128 +99,76 @@ class BookingCubit extends Cubit<BookingState> {
         DateSelectedState(
           date: currentState.date,
           availableAppointments: currentState.availableAppointments,
-          selectedTime: time, // Pass the selected time here
+          selectedTime: time,
+        ),
+      );
+    } else {
+      emit(
+        BookingFailure(
+          errMessage:
+              'Cannot select time: Date not properly selected or loaded.',
         ),
       );
     }
   }
 
-  Future<List<String>> _getBookedTimes(String doctorId, DateTime date) async {
-    try {
-      final startOfDay = DateTime(date.year, date.month, date.day);
-      final endOfDay = DateTime(
-        date.year,
-        date.month,
-        date.day,
-        23,
-        59,
-        59,
-        999,
+  Future<void> bookAppointment() async {
+    if (isClosed) return;
+    if (selectedDate == null || selectedTime == null) {
+      emit(
+        const BookingOperationFailure(
+          errMessage: 'Please select a date and time first',
+        ),
       );
-
-      final snapshot =
-          await _firestore
-              .collection('appointments')
-              .where('doctorId', isEqualTo: doctorId)
-              .where(
-                'date',
-                isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay),
-              )
-              .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
-              .get();
-
-      return snapshot.docs.map((doc) => doc['time'] as String).toList();
-    } catch (e) {
-      throw Exception('Failed to fetch booked times: ${e.toString()}');
-    }
-  }
-
-  Future<void> bookAppointment(String time) async {
-    if (selectedDate == null) {
-      emit(BookingFailure(errMessage: 'Please select a date first'));
       return;
     }
 
-    emit(BookedTimeLoading());
+    emit(BookingOperationLoading());
 
-    try {
-      final appointmentRef = _firestore.collection('appointments').doc();
-      final dateOnly = DateTime(
-        selectedDate!.year,
-        selectedDate!.month,
-        selectedDate!.day,
-      );
+    final result = await _bookingRepository.bookAppointment(
+      doctorId: doctor.id,
+      patientId: patientId,
+      date: selectedDate!,
+      time: selectedTime!,
+    );
 
-      await _firestore.runTransaction((transaction) async {
-        final querySnapshot =
-            await _firestore
-                .collection('appointments')
-                .where('doctorId', isEqualTo: doctor.id)
-                .where('date', isEqualTo: Timestamp.fromDate(dateOnly))
-                .where('time', isEqualTo: time)
-                .get();
-
-        if (querySnapshot.docs.isNotEmpty) {
-          throw Exception('This time slot has already been booked.');
-        }
-
-        final appointment = AppointmentModel(
-          id: appointmentRef.id,
-          doctorId: doctor.id,
-          patientId: patientId,
-          date: selectedDate!,
-          time: time,
-        );
-
-        transaction.set(appointmentRef, appointment.toFirestore());
-      });
-
-      emit(
-        BookingSuccess(
-          appointmentModel: AppointmentModel(
-            id: appointmentRef.id,
-            doctorId: doctor.id,
-            patientId: patientId,
-            date: selectedDate!,
-            time: time,
-          ),
-        ),
-      );
-
-      await selectDate(selectedDate!);
-
-      if (state is DateSelectedState) {
-        final currentState = state as DateSelectedState;
-        emit(
-          DateSelectedState(
-            date: currentState.date,
-            availableAppointments: currentState.availableAppointments,
-            selectedTime: null,
-          ),
-        );
-      }
-    } catch (e) {
-      emit(
-        BookedTimeFailure(
-          errMessage: 'Failed to book appointment: ${e.toString()}',
-        ),
-      );
-    }
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+        emit(BookingOperationFailure(errMessage: failure.message));
+        selectDate(selectedDate!);
+      },
+      (appointment) {
+        if (isClosed) return;
+        emit(BookingSuccess(appointmentModel: appointment));
+      },
+    );
   }
 
   Future<void> cancelAppointment({required String appointmentId}) async {
-    emit(BookedTimeLoading());
-    try {
-      await _firestore.collection('appointments').doc(appointmentId).delete();
-      emit(NotBooked());
-      if (selectedDate != null) selectDate(selectedDate!);
-      emit(AppointmentCanceled());
-    } catch (e) {
-      emit(
-        BookedTimeFailure(
-          errMessage: 'Failed to cancel appointment: ${e.toString()}',
-        ),
-      );
-    }
+    if (isClosed) return;
+    emit(AppointmentCanceledLoading());
+    final result = await _bookingRepository.cancelAppointment(
+      appointmentId: appointmentId,
+    );
+
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+        emit(BookingOperationFailure(errMessage: failure.message));
+        if (selectedDate != null) {
+          if (isClosed) return;
+          selectDate(selectedDate!);
+        }
+      },
+      (_) {
+        if (isClosed) return;
+        emit(AppointmentCanceledSuccess());
+        if (selectedDate != null) {
+          if (isClosed) return;
+          selectDate(selectedDate!);
+        }
+      },
+    );
   }
 }
