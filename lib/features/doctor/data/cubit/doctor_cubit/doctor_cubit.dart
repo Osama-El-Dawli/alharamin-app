@@ -1,25 +1,20 @@
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
+import 'package:alharamin_app/features/doctor/data/repository/i_doctor_repository.dart'; // Added import
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart'; // Removed import
 import 'package:equatable/equatable.dart';
 
 part 'doctor_state.dart';
 
 class DoctorCubit extends Cubit<DoctorState> {
-  DoctorCubit() : super(DoctorInitial());
+  final IDoctorRepository _doctorRepository;
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  DoctorCubit(this._doctorRepository) : super(DoctorInitial());
 
   Future<void> fetchDoctorsBySpeciality({required String speciality}) async {
     emit(DoctorLoading());
     try {
-      final snapShot =
-          await _firestore
-              .collection('doctors')
-              .where('speciality', isEqualTo: speciality)
-              .get();
-      final doctors =
-          snapShot.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList();
+      final doctors = await _doctorRepository.fetchDoctorsBySpeciality(speciality: speciality);
 
       if (doctors.isEmpty) {
         emit(DoctorEmpty(errMessage: 'No Doctors Found'));
@@ -33,17 +28,8 @@ class DoctorCubit extends Cubit<DoctorState> {
 
   Future<void> fetchDoctorsByName({required String nameEn}) async {
     emit(DoctorLoading());
-
     try {
-      final snapShot =
-          await _firestore
-              .collection('doctors')
-              .where('nameEn', isGreaterThanOrEqualTo: nameEn)
-              .where('nameEn', isLessThanOrEqualTo: '$nameEn\uf8ff')
-              .get();
-
-      final doctors =
-          snapShot.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList();
+      final doctors = await _doctorRepository.fetchDoctorsByName(nameEn: nameEn);
 
       if (doctors.isEmpty) {
         emit(DoctorEmpty(errMessage: 'No Doctors Found'));

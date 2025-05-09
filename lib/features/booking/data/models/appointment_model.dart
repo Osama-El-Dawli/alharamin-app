@@ -6,6 +6,7 @@ class AppointmentModel {
   final String patientId;
   final DateTime date;
   final String time;
+  final int price;
 
   const AppointmentModel({
     required this.id,
@@ -13,6 +14,7 @@ class AppointmentModel {
     required this.patientId,
     required this.date,
     required this.time,
+    required this.price,
   });
 
   factory AppointmentModel.fromFirestore(DocumentSnapshot doc) {
@@ -25,6 +27,7 @@ class AppointmentModel {
       patientId: data['patientId'],
       date: date,
       time: data['time'],
+      price: data['price'],
     );
   }
 
@@ -34,6 +37,7 @@ class AppointmentModel {
       'patientId': patientId,
       'date': Timestamp.fromDate(date),
       'time': time,
+      'price': price,
     };
   }
 }

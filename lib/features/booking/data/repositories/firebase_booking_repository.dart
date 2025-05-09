@@ -83,6 +83,7 @@ class FirebaseBookingRepository implements IBookingRepository {
     required String patientId,
     required DateTime date,
     required String time,
+    required int price,
   }) async {
     try {
       final appointmentsRef = _firestore.collection('appointments');
@@ -108,6 +109,7 @@ class FirebaseBookingRepository implements IBookingRepository {
         'patientId': patientId,
         'date': Timestamp.fromDate(date),
         'time': time,
+        'price': price,
       });
 
       final newDocSnapshot = await docRef.get();

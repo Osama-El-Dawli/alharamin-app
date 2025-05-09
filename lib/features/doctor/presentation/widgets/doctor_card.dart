@@ -75,6 +75,14 @@ class DoctorCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 8.h),
+                Text(
+                  '${doctorModel.price} EGP',
+                  style: Styles.font12W500DarkGrey.copyWith(
+                    color: AppColors.darkPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ],
             ),
           ],

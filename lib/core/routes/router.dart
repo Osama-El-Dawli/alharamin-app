@@ -14,6 +14,7 @@ import 'package:alharamin_app/features/booking/presentation/screens/booking_scre
 import 'package:alharamin_app/features/chatbot/data/cubit/chatbot_cubit.dart';
 import 'package:alharamin_app/features/chatbot/presentation/screens/chat_bot_screen.dart';
 import 'package:alharamin_app/features/doctor/data/cubit/doctor_cubit/doctor_cubit.dart';
+import 'package:alharamin_app/features/doctor/data/repository/i_doctor_repository.dart';
 import 'package:alharamin_app/features/doctor/presentation/screens/doctor_screen.dart';
 import 'package:alharamin_app/features/home/presentation/screen/user_home_screen.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_login_screen.dart';
@@ -105,17 +106,16 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.doctor,
       builder: (context, state) {
-        final doctorScreeenParams = state.extra as DoctorScreeenParams;
+        final extra = state.extra as DoctorScreeenParams;
         return BlocProvider(
           create:
-              (context) =>
-                  DoctorCubit()..fetchDoctorsBySpeciality(
-                    speciality: doctorScreeenParams.specialityName,
+              (context) => DoctorCubit(getIt<IDoctorRepository>())..fetchDoctorsBySpeciality(
+                    speciality: extra.specialityName,
                   ),
 
           child: DoctorScreen(
-            specialityName: doctorScreeenParams.specialityName,
-            userModel: doctorScreeenParams.userModel,
+            specialityName: extra.specialityName,
+            userModel: extra.userModel,
           ),
         );
       },

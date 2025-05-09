@@ -130,6 +130,7 @@ class BookingCubit extends Cubit<BookingState> {
       patientId: patientId,
       date: selectedDate!,
       time: selectedTime!,
+      price: doctor.price,
     );
 
     result.fold(

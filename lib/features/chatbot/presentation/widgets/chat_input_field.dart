@@ -17,7 +17,7 @@ class ChatInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: REdgeInsets.all(8.0),
+      padding: REdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
       child: Row(
         children: [
           Expanded(

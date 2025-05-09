@@ -18,6 +18,7 @@ abstract class IBookingRepository {
     required String patientId,
     required DateTime date,
     required String time,
+    required int price,
   });
 
   Future<Either<Failure, void>> cancelAppointment({

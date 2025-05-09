@@ -6,6 +6,7 @@ class DoctorModel {
   final String nameAr;
   final String speciality;
   final List<String> appointments;
+  final int price;
 
   const DoctorModel({
     required this.id,
@@ -13,11 +14,13 @@ class DoctorModel {
     required this.nameAr,
     required this.speciality,
     required this.appointments,
+    this.price = 150,
   });
 
-  factory DoctorModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-
+  factory DoctorModel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
+    final data = doc.data()!;
     final appointments = (data['appointments'] as List?)?.cast<String>() ?? [];
 
     return DoctorModel(
@@ -26,6 +29,7 @@ class DoctorModel {
       nameEn: data['nameEn'],
       speciality: data['speciality'],
       appointments: appointments,
+      price: data['price'] ?? 150,
     );
   }
 
@@ -35,6 +39,7 @@ class DoctorModel {
       'nameAr': nameAr,
       'speciality': speciality,
       'appointments': appointments,
+      'price': price,
     };
   }
 }
