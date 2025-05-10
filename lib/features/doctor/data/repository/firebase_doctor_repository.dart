@@ -22,11 +22,11 @@ class FirebaseDoctorRepository implements IDoctorRepository {
     final snapShot =
         await _firestore
             .collection('doctors')
-            .where(
-              'nameEn',
-              isEqualTo: nameEn,
-            )
+            .orderBy('nameEn')
+            .startAt([nameEn])
+            .endAt(['$nameEn\uf8ff'])
             .get();
+
     return snapShot.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList();
   }
 }
