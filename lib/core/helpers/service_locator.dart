@@ -1,4 +1,7 @@
 import 'package:alharamin_app/core/helpers/chache_helper.dart';
+import 'package:alharamin_app/features/admin/data/cubits/confirm_booking_cubit/confirm_booking_cubit.dart';
+import 'package:alharamin_app/features/admin/data/repository/confrim_booking_repo.dart';
+import 'package:alharamin_app/features/admin/data/repository/firebase_confirm_booking_repo.dart';
 import 'package:get_it/get_it.dart';
 import 'package:alharamin_app/features/auth/data/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/data/repositories/auth_repository.dart';
@@ -20,15 +23,19 @@ Future<void> setupServiceLocator() async {
     () => FirebaseBookingRepository(),
   );
 
-  getIt.registerLazySingleton<IAuthRepository>(
-    () => FirebaseAuthRepository(),
-  );
+  getIt.registerLazySingleton<IAuthRepository>(() => FirebaseAuthRepository());
 
-  getIt.registerFactory<AuthCubit>(
-    () => AuthCubit(getIt<IAuthRepository>()),
-  );
+  getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<IAuthRepository>()));
 
   getIt.registerLazySingleton<IDoctorRepository>(
     () => FirebaseDoctorRepository(),
+  );
+
+  getIt.registerLazySingleton<IConfirmBookingRepository>(
+    () => FirebaseConfirmBookingRepo(),
+  );
+
+  getIt.registerFactory(
+    () => ConfirmBookingCubit(getIt<IConfirmBookingRepository>()),
   );
 }

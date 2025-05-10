@@ -1,7 +1,6 @@
 import 'package:alharamin_app/features/doctor/data/model/doctor_model.dart';
 import 'package:alharamin_app/features/doctor/data/repository/i_doctor_repository.dart'; // Added import
 import 'package:bloc/bloc.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart'; // Removed import
 import 'package:equatable/equatable.dart';
 
 part 'doctor_state.dart';
