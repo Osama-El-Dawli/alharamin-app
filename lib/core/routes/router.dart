@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:alharamin_app/core/helpers/service_locator.dart';
 import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/routes/extra_params.dart';
-import 'package:alharamin_app/features/admin/cubits/admin_login_cubit/admin_login_cubit.dart';
+import 'package:alharamin_app/features/admin/data/cubits/admin_login_cubit/admin_login_cubit.dart';
+import 'package:alharamin_app/features/admin/data/cubits/confirm_booking_cubit/confirm_booking_cubit.dart';
+import 'package:alharamin_app/features/admin/data/cubits/download_payment/download_payment_cubit.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_home_screen.dart';
 import 'package:alharamin_app/features/auth/data/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/data/models/user_model.dart';
@@ -89,8 +91,16 @@ final router = GoRouter(
     GoRoute(
       path: AppRoutes.adminHome,
       builder:
-          (context, state) => BlocProvider(
-            create: (context) => AdminLoginCubit(),
+          (context, state) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => AdminLoginCubit()),
+              BlocProvider(create: (context) => DownloadPaymentCubit()),
+              BlocProvider(
+                create:
+                    (context) =>
+                        getIt.get<ConfirmBookingCubit>()..fetchBooking(),
+              ),
+            ],
             child: const AdminHomeScreen(),
           ),
     ),
@@ -109,9 +119,8 @@ final router = GoRouter(
         final extra = state.extra as DoctorScreeenParams;
         return BlocProvider(
           create:
-              (context) => DoctorCubit(getIt<IDoctorRepository>())..fetchDoctorsBySpeciality(
-                    speciality: extra.specialityName,
-                  ),
+              (context) => DoctorCubit(getIt<IDoctorRepository>())
+                ..fetchDoctorsBySpeciality(speciality: extra.specialityName),
 
           child: DoctorScreen(
             specialityName: extra.specialityName,
@@ -161,10 +170,11 @@ final router = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.chatBot,
-      builder: (context, state) => BlocProvider(
-        create: (context) => ChatbotCubit(),
-        child: const ChatBotScreen(),
-      ),
+      builder:
+          (context, state) => BlocProvider(
+            create: (context) => ChatbotCubit(),
+            child: const ChatBotScreen(),
+          ),
     ),
   ],
 );
