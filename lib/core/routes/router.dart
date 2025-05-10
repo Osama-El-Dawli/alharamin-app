@@ -5,6 +5,7 @@ import 'package:alharamin_app/core/routes/app_routes.dart';
 import 'package:alharamin_app/core/routes/extra_params.dart';
 import 'package:alharamin_app/features/admin/data/cubits/admin_login_cubit/admin_login_cubit.dart';
 import 'package:alharamin_app/features/admin/data/cubits/confirm_booking_cubit/confirm_booking_cubit.dart';
+import 'package:alharamin_app/features/admin/data/cubits/download_payment/download_payment_cubit.dart';
 import 'package:alharamin_app/features/admin/presentation/screens/admin_home_screen.dart';
 import 'package:alharamin_app/features/auth/data/cubit/auth_cubit.dart';
 import 'package:alharamin_app/features/auth/data/models/user_model.dart';
@@ -93,6 +94,7 @@ final router = GoRouter(
           (context, state) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => AdminLoginCubit()),
+              BlocProvider(create: (context) => DownloadPaymentCubit()),
               BlocProvider(
                 create:
                     (context) =>

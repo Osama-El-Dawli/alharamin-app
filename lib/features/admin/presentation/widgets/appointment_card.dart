@@ -3,9 +3,12 @@ import 'package:alharamin_app/core/constants/assets.dart';
 import 'package:alharamin_app/core/functions/capitalize.dart';
 import 'package:alharamin_app/core/theme/app_colors.dart';
 import 'package:alharamin_app/core/theme/styles.dart';
+import 'package:alharamin_app/features/admin/data/cubits/confirm_booking_cubit/confirm_booking_cubit.dart';
 import 'package:alharamin_app/features/admin/data/models/payment_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({super.key, required this.paymentModel});
@@ -23,6 +26,7 @@ class AppointmentCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   clipBehavior: Clip.hardEdge,
@@ -47,6 +51,7 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 SizedBox(width: 16.w),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -84,6 +89,7 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 SizedBox(width: 8.w),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -110,7 +116,7 @@ class AppointmentCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Date. ${paymentModel.date}  |  ',
+                          'Date. ${DateFormat('dd MMMM yyyy').format(paymentModel.date)}  |  ',
                           style: Styles.font12W500DarkGrey.copyWith(
                             color: AppColors.darkPrimary,
                             fontWeight: FontWeight.w700,
@@ -133,8 +139,13 @@ class AppointmentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<ConfirmBookingCubit>().confirmBooking(
+                      id: paymentModel.id,
+                    );
+                  },
                   style: ButtonStyle(
+                    fixedSize: WidgetStatePropertyAll(Size.fromWidth(80.w)),
                     shape: WidgetStatePropertyAll(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
@@ -149,8 +160,13 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<ConfirmBookingCubit>().deleteBooking(
+                      id: paymentModel.id,
+                    );
+                  },
                   style: ButtonStyle(
+                    fixedSize: WidgetStatePropertyAll(Size.fromWidth(80.w)),
                     shape: WidgetStatePropertyAll(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),

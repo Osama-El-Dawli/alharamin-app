@@ -25,7 +25,7 @@ class FirebaseConfirmBookingRepo implements IConfirmBookingRepository {
         return Left(ServerFailure(message: 'Patient not found.'));
       }
       final patientData = patientSnapshot.data() as Map<String, dynamic>;
-      final patientName = patientData['name'];
+      final patientName = patientData['fullName'];
       final patientPhone = patientData['phone'];
 
       final doctorSnapshot =
@@ -37,7 +37,7 @@ class FirebaseConfirmBookingRepo implements IConfirmBookingRepository {
         return Left(ServerFailure(message: 'Doctor not found.'));
       }
       final doctorData = doctorSnapshot.data() as Map<String, dynamic>;
-      final doctorName = doctorData['name'];
+      final doctorName = doctorData['nameEn'];
       final doctorSpeciality = doctorData['speciality'];
 
       final payment = PaymentModel(
@@ -65,18 +65,6 @@ class FirebaseConfirmBookingRepo implements IConfirmBookingRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteBooking({required String id}) async {
-    try {
-      final docRef = _firestore.collection('appointments').doc(id);
-      await docRef.delete();
-
-      return const Right(null);
-    } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
-    }
-  }
-
-  @override
   Future<Either<Failure, List<PaymentModel>>> fetchBooking() async {
     try {
       final appointmentsSnapshot =
@@ -93,11 +81,10 @@ class FirebaseConfirmBookingRepo implements IConfirmBookingRepository {
                 .doc(appointment.patientId)
                 .get();
         if (!patientSnapshot.exists) {
-          print('Missing patient ${appointment.patientId}');
           continue;
         }
         final patientData = patientSnapshot.data() as Map<String, dynamic>;
-        final patientName = patientData['name'];
+        final patientName = patientData['fullName'];
         final patientPhone = patientData['phone'];
 
         final doctorSnapshot =
@@ -106,22 +93,26 @@ class FirebaseConfirmBookingRepo implements IConfirmBookingRepository {
                 .doc(appointment.doctorId)
                 .get();
         if (!doctorSnapshot.exists) {
-          print('Missing doctor ${appointment.doctorId}');
           continue;
         }
         final doctorData = doctorSnapshot.data() as Map<String, dynamic>;
-        final doctorName = doctorData['name'];
+        final doctorName = doctorData['nameEn'];
         final doctorSpeciality = doctorData['speciality'];
+
+        final safePatientName = patientName;
+        final safePatientPhone = patientPhone;
+        final safeDoctorName = doctorName;
+        final safeDoctorSpeciality = doctorSpeciality;
 
         final payment = PaymentModel(
           id: appointment.id,
-          patientName: patientName,
-          patientPhone: patientPhone,
-          doctorName: doctorName,
+          patientName: safePatientName,
+          patientPhone: safePatientPhone,
+          doctorName: safeDoctorName,
           time: appointment.time,
           date: appointment.date,
           price: appointment.price,
-          doctorSpeciality: doctorSpeciality,
+          doctorSpeciality: safeDoctorSpeciality,
         );
 
         bookings.add(payment);
@@ -146,6 +137,19 @@ class FirebaseConfirmBookingRepo implements IConfirmBookingRepository {
       });
 
       return Right(bookings);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteBooking({required String id}) async {
+    try {
+      final docRef = _firestore.collection('appointments').doc(id);
+      await docRef.delete();
+
+
+      return const Right(null);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }

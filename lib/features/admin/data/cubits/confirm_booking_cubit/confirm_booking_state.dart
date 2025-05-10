@@ -21,6 +21,11 @@ final class ConfirmBookingSuccess extends ConfirmBookingState {
   const ConfirmBookingSuccess({required this.bookings});
 }
 
+final class ConfirmBookingEmpty extends ConfirmBookingState {
+  final String message;
+  const ConfirmBookingEmpty({required this.message});
+}
+
 final class ConfirmBookingConfirmed extends ConfirmBookingState {}
 
 final class ConfirmBookingDeleted extends ConfirmBookingState {}

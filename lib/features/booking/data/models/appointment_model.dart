@@ -27,7 +27,7 @@ class AppointmentModel {
       patientId: data['patientId'],
       date: date,
       time: data['time'],
-      price: data['price'],
+      price: data['price'] ?? 150,
     );
   }
 

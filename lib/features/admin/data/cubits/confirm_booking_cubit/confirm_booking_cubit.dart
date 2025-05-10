@@ -14,10 +14,12 @@ class ConfirmBookingCubit extends Cubit<ConfirmBookingState> {
 
     final result = await _bookingRepository.confirmBooking(id: id);
 
-    result.fold(
-      (left) => emit(ConfirmBookingFailure(message: left.message)),
-      (right) => emit(ConfirmBookingConfirmed()),
-    );
+    result.fold((left) => emit(ConfirmBookingFailure(message: left.message)), (
+      right,
+    ) {
+      emit(ConfirmBookingConfirmed());
+      fetchBooking();
+    });
   }
 
   Future<void> deleteBooking({required String id}) async {
@@ -25,10 +27,12 @@ class ConfirmBookingCubit extends Cubit<ConfirmBookingState> {
 
     final result = await _bookingRepository.deleteBooking(id: id);
 
-    result.fold(
-      (left) => emit(ConfirmBookingFailure(message: left.message)),
-      (right) => emit(ConfirmBookingDeleted()),
-    );
+    result.fold((left) => emit(ConfirmBookingFailure(message: left.message)), (
+      right,
+    ) async {
+      emit(ConfirmBookingDeleted());
+      await fetchBooking();
+    });
   }
 
   Future<List<PaymentModel>> fetchBooking() async {
@@ -38,7 +42,11 @@ class ConfirmBookingCubit extends Cubit<ConfirmBookingState> {
 
     return result.fold(
       (left) {
-        emit(ConfirmBookingFailure(message: left.message));
+        emit(
+          ConfirmBookingEmpty(
+            message: 'Error: No Appointments ${left.message}',
+          ),
+        );
         return [];
       },
 
