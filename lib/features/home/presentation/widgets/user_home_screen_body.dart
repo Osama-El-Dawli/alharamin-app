@@ -47,7 +47,7 @@ class UserHomeScreenBody extends StatelessWidget {
             },
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 185 / 220,
+              childAspectRatio: 185 / 245,
               crossAxisSpacing: 12.w,
               mainAxisSpacing: 12.h,
             ),

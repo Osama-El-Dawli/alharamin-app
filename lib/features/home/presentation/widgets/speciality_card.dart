@@ -21,7 +21,7 @@ class SpecialityCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 8.h),
+                padding: EdgeInsets.symmetric(vertical: 8.h),
                 child: Container(
                   decoration: BoxDecoration(
                     boxShadow: [
