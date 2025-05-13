@@ -42,48 +42,70 @@ class DoctorCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: 16.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Dr. ${doctorModel.nameEn.capitalizeEachWord()}',
-                  style: Styles.font16W700Primary.copyWith(
-                    color: AppColors.darkPrimary,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    Text(
-                      doctorModel.speciality.capitalizeEachWord(),
-                      style: Styles.font12W500DarkGrey,
-                    ),
-                    SizedBox(width: 8.w),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 0.5.w),
-                      height: 12.h,
-                      width: 1.5.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: AppColors.darkGrey,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Dr. ${doctorModel.nameEn.capitalizeEachWord()}',
+                      style: Styles.font16W700Primary.copyWith(
+                        color: AppColors.darkPrimary,
                       ),
                     ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      '${AppStrings.appNameEn} Hospital',
-                      style: Styles.font12W500DarkGrey,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  '${doctorModel.price} EGP',
-                  style: Styles.font12W500DarkGrey.copyWith(
-                    color: AppColors.darkPrimary,
-                    fontWeight: FontWeight.w700,
                   ),
-                ),
-              ],
+                  SizedBox(height: 8.h),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            doctorModel.speciality.capitalizeEachWord(),
+                            style: Styles.font12W500DarkGrey,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 0.5.w),
+                        height: 12.h,
+                        width: 1.5.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: AppColors.darkGrey,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${AppStrings.appNameEn} Hospital',
+                            style: Styles.font12W500DarkGrey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '${doctorModel.price} EGP',
+                      style: Styles.font12W500DarkGrey.copyWith(
+                        color: AppColors.darkPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
