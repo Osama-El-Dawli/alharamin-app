@@ -69,7 +69,7 @@ class ChatBotWidget extends StatelessWidget {
             ),
             Positioned(
               top: -35.h,
-              right: -25.w,
+              right: -35.w,
               child: Image.asset(Assets.assetsImagesChatbotHomeScreen),
             ),
           ],

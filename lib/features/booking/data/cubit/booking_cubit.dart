@@ -22,7 +22,12 @@ class BookingCubit extends Cubit<BookingState> {
     required this.patientId,
     required IBookingRepository bookingRepository,
   }) : _bookingRepository = bookingRepository,
-       super(BookingInitial());
+       super(BookingInitial()) {
+    // Automatically select tomorrow as the first day
+    final now = DateTime.now();
+    final tomorrow = DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
+    selectDate(tomorrow);
+  }
 
   Future<Either<Failure, AppointmentModel?>> checkIsAlreadyBooked() async {
     if (isClosed) {
@@ -69,17 +74,15 @@ class BookingCubit extends Cubit<BookingState> {
       (bookedTimesList) {
         if (isClosed) return;
         bookedTimes = bookedTimesList;
-        final allDoctorTimes = doctor.appointments;
         final availableAppointments =
-            allDoctorTimes
-                .where((timeSlot) => !bookedTimes.contains(timeSlot))
+            doctor.appointments
+                .where((time) => !bookedTimes.contains(time))
                 .toList();
 
         emit(
           DateSelectedState(
             date: date,
             availableAppointments: availableAppointments,
-            selectedTime: null,
           ),
         );
       },

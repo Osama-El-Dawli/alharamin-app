@@ -51,13 +51,23 @@ class FirebaseBookingRepository implements IBookingRepository {
     required DateTime date,
   }) async {
     try {
-      final dateOnly = DateTime(date.year, date.month, date.day);
-      final querySnapshot =
-          await _firestore
-              .collection('appointments')
-              .where('doctorId', isEqualTo: doctorId)
-              .where('date', isEqualTo: Timestamp.fromDate(dateOnly))
-              .get();
+      final startOfDay = DateTime(date.year, date.month, date.day);
+      final endOfDay = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        23,
+        59,
+        59,
+        999,
+      );
+
+      final querySnapshot = await _firestore
+          .collection('appointments')
+          .where('doctorId', isEqualTo: doctorId)
+          .where('date', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+          .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+          .get();
 
       final bookedTimes =
           querySnapshot.docs.map((doc) => doc['time'] as String).toList();
@@ -87,11 +97,12 @@ class FirebaseBookingRepository implements IBookingRepository {
   }) async {
     try {
       final appointmentsRef = _firestore.collection('appointments');
+      final dateOnly = DateTime(date.year, date.month, date.day);
 
       final querySnapshot =
           await appointmentsRef
               .where('doctorId', isEqualTo: doctorId)
-              .where('date', isEqualTo: Timestamp.fromDate(date))
+              .where('date', isEqualTo: Timestamp.fromDate(dateOnly))
               .where('time', isEqualTo: time)
               .limit(1)
               .get();

@@ -69,24 +69,22 @@ class BookingScreenBody extends StatelessWidget {
                         color: AppColors.primary,
                       ),
                     );
-                  } else {
-                    return (state is BookingOperationLoading)
-                        ? const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.primary,
-                          ),
-                        )
-                        : CustomButton(
-                          text: 'Book',
-                          onPressed: () {
-                            if (cubit.selectedTime != null) {
-                              cubit.bookAppointment();
-                            } else {
-                              flutterToast('Please select a time slot');
-                            }
-                          },
-                        );
                   }
+                  
+                  return CustomButton(
+                    text: 'Book',
+                    onPressed: () {
+                      if (cubit.selectedDate == null) {
+                        flutterToast('Please select a date first');
+                        return;
+                      }
+                      if (cubit.selectedTime == null) {
+                        flutterToast('Please select a time slot');
+                        return;
+                      }
+                      cubit.bookAppointment();
+                    },
+                  );
                 },
               ),
             ),
