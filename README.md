@@ -1,4 +1,4 @@
-# alharamin_app
+# Alharamin (Health Care App)
 
 Health Care Flutter Project.
 
