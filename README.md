@@ -1,6 +1,6 @@
 # alharamin_app
 
-A new Flutter project.
+Health Care Flutter Project.
 
 ## Getting Started
 
